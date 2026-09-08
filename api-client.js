@@ -88,6 +88,19 @@ export const reservationsAPI = {
    */
   getById: async (id) => {
     return requestJson(`${API_URL}/reservations/${id}`, {}, "Failed to load reservation.");
+  },
+
+  /**
+   * Cancel a reservation owned by the logged-in customer
+   * @param {number} id - Reservation ID
+   * @returns {Promise<Object>}
+   */
+  cancel: async (id) => {
+    return requestJson(
+      `${API_URL}/my/reservations/${id}`,
+      { method: "DELETE", credentials: "include" },
+      "Failed to cancel reservation."
+    );
   }
 };
 

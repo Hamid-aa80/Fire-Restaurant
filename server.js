@@ -331,13 +331,24 @@ app.delete('/api/my/reservations/:id', requireAuth, (req, res) => {
       if (!reservation) {
         return res.status(404).json({ success: false, message: 'Reservation not found' });
       }
-      db.run(`DELETE FROM reservations WHERE id = ?`, [req.params.id], function(deleteErr) {
-        if (deleteErr) {
-          console.error('Database error:', deleteErr);
-          return res.status(500).json({ success: false, message: 'Failed to cancel reservation' });
+      if (reservation.status === 'cancelled') {
+        return res.status(409).json({ success: false, message: 'Reservation is already cancelled' });
+      }
+      db.run(
+        `UPDATE reservations SET status = 'cancelled' WHERE id = ? AND customer_id = ?`,
+        [req.params.id, req.session.customerId],
+        function(updateErr) {
+          if (updateErr) {
+            console.error('Database error:', updateErr);
+            return res.status(500).json({ success: false, message: 'Failed to cancel reservation' });
+          }
+          res.json({
+            success: true,
+            message: 'Reservation cancelled successfully',
+            data: { ...reservation, status: 'cancelled' }
+          });
         }
-        res.json({ success: true, message: 'Reservation cancelled successfully' });
-      });
+      );
     }
   );
 });

@@ -150,6 +150,31 @@ Retrieve a specific reservation.
 
 ---
 
+### Cancel My Reservation
+
+**DELETE** `/api/my/reservations/:id`
+
+Cancel a reservation belonging to the authenticated customer. Cancellation keeps
+the booking record and changes its `status` to `cancelled`.
+
+**Response (Success):**
+```json
+{
+  "success": true,
+  "message": "Reservation cancelled successfully",
+  "data": {
+    "id": 1,
+    "status": "cancelled"
+  }
+}
+```
+
+The endpoint returns `401` when the customer is not logged in, `404` when the
+reservation does not belong to the customer, and `409` when it is already
+cancelled.
+
+---
+
 ## Newsletter
 
 ### Subscribe to Newsletter
