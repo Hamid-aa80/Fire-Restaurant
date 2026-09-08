@@ -6,6 +6,7 @@ from django.db import models
 class Customer(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
+    password_hash = models.CharField(max_length=255, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
