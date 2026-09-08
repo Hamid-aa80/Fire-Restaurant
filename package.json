@@ -12,10 +12,12 @@
     "@playwright/test": "^1.55.0"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "body-parser": "^2.3.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "sqlite3": "^6.0.1"
   }
 }
