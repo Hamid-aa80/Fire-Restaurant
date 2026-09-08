@@ -29,13 +29,7 @@ Your Salt & Smoke restaurant website now has a fully functional backend API! Her
    - Usage examples
    - Troubleshooting tips
 
-5. **`api-integration-examples.js`** (7.2 KB)
-   - Code examples for frontend integration
-   - Form submission handlers
-   - Menu loading examples
-   - Error handling patterns
-
-6. **`test-api.sh`** (Bash script)
+5. **`test-api.sh`** (Bash script)
    - Comprehensive API test suite
    - Tests all endpoints
    - Validates error handling
@@ -183,7 +177,6 @@ All documentation is included in the repository:
 
 - **API-QUICKSTART.md** - Start here for quick setup
 - **API-DOCUMENTATION.md** - Complete API reference
-- **api-integration-examples.js** - Code examples
 
 ---
 
