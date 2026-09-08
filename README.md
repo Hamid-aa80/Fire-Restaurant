@@ -719,7 +719,6 @@ The following files are written for this interactive application:
 - `manage.js`
 - `server.js`
 - `api-client.js`
-- `api-integration-examples.js`
 - `tests/site.spec.ts`
 
 ### External libraries and sources
@@ -810,7 +809,6 @@ style.css
 main.js
 server.js
 api-client.js
-api-integration-examples.js
 tests/
 assets/
 README-img/

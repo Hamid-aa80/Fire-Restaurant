@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         month: "short",
         day: "numeric"
       });
+      const isCancelled = reservation.status === "cancelled";
       item.innerHTML = `
         <div>
           <strong>${formattedDate}</strong> at ${reservation.time}
@@ -66,10 +67,18 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="badge text-bg-info ms-1">${reservation.status}</span>
           ${reservation.requests ? `<p class="small text-muted mb-0 mt-1">${reservation.requests}</p>` : ""}
         </div>
-        <button class="btn btn-sm btn-outline-danger cancel-reservation" type="button">Cancel</button>
+        ${isCancelled
+          ? '<span class="small text-muted">Cancelled</span>'
+          : '<button class="btn btn-sm btn-outline-danger cancel-reservation" type="button">Cancel</button>'}
       `;
-      item.querySelector(".cancel-reservation").addEventListener("click", async () => {
+      const cancelButton = item.querySelector(".cancel-reservation");
+      if (!cancelButton) {
+        myReservationsList.appendChild(item);
+        return;
+      }
+      cancelButton.addEventListener("click", async () => {
         if (!window.confirm("Cancel this reservation?")) return;
+        cancelButton.disabled = true;
         try {
           const response = await fetch(`/api/my/reservations/${reservation.id}`, {
             method: "DELETE",
@@ -83,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
           await loadMyReservations();
         } catch (error) {
           showFeedback(error.message, "danger");
+          cancelButton.disabled = false;
         }
       });
       myReservationsList.appendChild(item);
