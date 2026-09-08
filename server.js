@@ -2,6 +2,8 @@ import express from 'express';
 import sqlite3 from 'sqlite3';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import session from 'express-session';
+import bcrypt from 'bcryptjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -9,9 +11,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'salt-smoke-dev-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+  }
+}));
 
 // Database setup
 const __filename = fileURLToPath(import.meta.url);
@@ -65,6 +76,21 @@ function initializeDatabase() {
       if (!columns.some(column => column.name === 'customer_id')) {
         db.run(
           `ALTER TABLE reservations ADD COLUMN customer_id INTEGER REFERENCES customers(id)`,
+          alterErr => {
+            if (alterErr) console.error('Database migration error:', alterErr);
+          }
+        );
+      }
+    });
+
+    db.all(`PRAGMA table_info(customers)`, (err, columns) => {
+      if (err) {
+        console.error('Database schema check error:', err);
+        return;
+      }
+      if (!columns.some(column => column.name === 'password_hash')) {
+        db.run(
+          `ALTER TABLE customers ADD COLUMN password_hash TEXT`,
           alterErr => {
             if (alterErr) console.error('Database migration error:', alterErr);
           }
@@ -128,7 +154,193 @@ function validateReservation(data) {
   return errors;
 }
 
+function validateSignup(data) {
+  const errors = [];
+
+  if (!data.name || data.name.trim().length < 2) {
+    errors.push('Name must be at least 2 characters');
+  }
+  if (!validateEmail(data.email)) {
+    errors.push('Invalid email format');
+  }
+  if (!data.password || data.password.length < 6) {
+    errors.push('Password must be at least 6 characters');
+  }
+
+  return errors;
+}
+
+// Requires an authenticated customer session; used to protect account-scoped routes.
+function requireAuth(req, res, next) {
+  if (!req.session || !req.session.customerId) {
+    return res.status(401).json({ success: false, message: 'You must be logged in to do that' });
+  }
+  next();
+}
+
 // Routes
+
+// Auth
+app.post('/api/auth/signup', (req, res) => {
+  const { name, email, password } = req.body;
+
+  const validationErrors = validateSignup({ name, email, password });
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ success: false, errors: validationErrors });
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+
+  db.get(`SELECT id FROM customers WHERE email = ?`, [normalizedEmail], (lookupErr, existing) => {
+    if (lookupErr) {
+      console.error('Database error:', lookupErr);
+      return res.status(500).json({ success: false, message: 'Failed to check existing account' });
+    }
+    if (existing) {
+      return res.status(400).json({ success: false, message: 'An account with that email already exists' });
+    }
+
+    const passwordHash = bcrypt.hashSync(password, 10);
+    db.run(
+      `INSERT INTO customers (name, email, password_hash) VALUES (?, ?, ?)`,
+      [name.trim(), normalizedEmail, passwordHash],
+      function(insertErr) {
+        if (insertErr) {
+          console.error('Database error:', insertErr);
+          return res.status(500).json({ success: false, message: 'Failed to create account' });
+        }
+        req.session.customerId = this.lastID;
+        req.session.customerName = name.trim();
+        req.session.customerEmail = normalizedEmail;
+        res.status(201).json({
+          success: true,
+          message: 'Account created successfully',
+          customer: { id: this.lastID, name: name.trim(), email: normalizedEmail }
+        });
+      }
+    );
+  });
+});
+
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!validateEmail(email) || !password) {
+    return res.status(400).json({ success: false, message: 'Email and password are required' });
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+
+  db.get(`SELECT * FROM customers WHERE email = ?`, [normalizedEmail], (err, customer) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ success: false, message: 'Failed to log in' });
+    }
+    if (!customer || !customer.password_hash || !bcrypt.compareSync(password, customer.password_hash)) {
+      return res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    req.session.customerId = customer.id;
+    req.session.customerName = customer.name;
+    req.session.customerEmail = customer.email;
+    res.json({
+      success: true,
+      message: 'Logged in successfully',
+      customer: { id: customer.id, name: customer.name, email: customer.email }
+    });
+  });
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Session destroy error:', err);
+      return res.status(500).json({ success: false, message: 'Failed to log out' });
+    }
+    res.clearCookie('connect.sid');
+    res.json({ success: true, message: 'Logged out successfully' });
+  });
+});
+
+app.get('/api/auth/me', (req, res) => {
+  if (!req.session || !req.session.customerId) {
+    return res.json({ success: true, customer: null });
+  }
+  res.json({
+    success: true,
+    customer: {
+      id: req.session.customerId,
+      name: req.session.customerName,
+      email: req.session.customerEmail
+    }
+  });
+});
+
+// Reservations tied to the logged-in customer's account
+app.get('/api/my/reservations', requireAuth, (req, res) => {
+  db.all(
+    `SELECT * FROM reservations WHERE customer_id = ? ORDER BY date DESC, time DESC`,
+    [req.session.customerId],
+    (err, rows) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ success: false, message: 'Failed to fetch your reservations' });
+      }
+      res.json({ success: true, data: rows });
+    }
+  );
+});
+
+app.post('/api/my/reservations', requireAuth, (req, res) => {
+  const { date, time = '19:30', guests, requests } = req.body;
+  const name = req.session.customerName;
+  const email = req.session.customerEmail;
+
+  const validationErrors = validateReservation({ name, email, date, time, guests });
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ success: false, errors: validationErrors });
+  }
+
+  db.run(
+    `INSERT INTO reservations (name, email, date, time, guests, requests, customer_id)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [name, email, date, time, guests, requests || '', req.session.customerId],
+    function(err) {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ success: false, message: 'Failed to create reservation' });
+      }
+      res.status(201).json({
+        success: true,
+        message: 'Reservation created successfully',
+        reservationId: this.lastID
+      });
+    }
+  );
+});
+
+app.delete('/api/my/reservations/:id', requireAuth, (req, res) => {
+  db.get(
+    `SELECT * FROM reservations WHERE id = ? AND customer_id = ?`,
+    [req.params.id, req.session.customerId],
+    (err, reservation) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ success: false, message: 'Failed to cancel reservation' });
+      }
+      if (!reservation) {
+        return res.status(404).json({ success: false, message: 'Reservation not found' });
+      }
+      db.run(`DELETE FROM reservations WHERE id = ?`, [req.params.id], function(deleteErr) {
+        if (deleteErr) {
+          console.error('Database error:', deleteErr);
+          return res.status(500).json({ success: false, message: 'Failed to cancel reservation' });
+        }
+        res.json({ success: true, message: 'Reservation cancelled successfully' });
+      });
+    }
+  );
+});
 
 // Reservations
 app.post('/api/reservations', (req, res) => {
@@ -193,58 +405,58 @@ app.get('/api/reservations/:id', (req, res) => {
     [req.params.id],
     (err, row) => {
       if (err) {
-        return res.status(500).json({ 
-          success: false, 
-          message: 'Failed to fetch reservation' 
-        });
-
-        app.put('/api/reservations/:id', (req, res) => {
-          const { name, email, date, time = '19:30', guests, requests, status } = req.body;
-          const validationErrors = validateReservation({ name, email, date, time, guests });
-          if (validationErrors.length > 0) {
-            return res.status(400).json({ success: false, errors: validationErrors });
-          }
-
-          db.run(
-            `UPDATE reservations
-             SET name = ?, email = ?, date = ?, time = ?, guests = ?, requests = ?, status = ?
-             WHERE id = ?`,
-            [name.trim(), email.trim(), date, time, guests, requests || '', status || 'confirmed', req.params.id],
-            function(err) {
-              if (err) {
-                console.error('Database error:', err);
-                return res.status(500).json({ success: false, message: 'Failed to update reservation' });
-              }
-              if (this.changes === 0) {
-                return res.status(404).json({ success: false, message: 'Reservation not found' });
-              }
-              res.json({ success: true, message: 'Reservation updated successfully' });
-            }
-          );
-        });
-
-        app.delete('/api/reservations/:id', (req, res) => {
-          db.run(`DELETE FROM reservations WHERE id = ?`, [req.params.id], function(err) {
-            if (err) {
-              console.error('Database error:', err);
-              return res.status(500).json({ success: false, message: 'Failed to delete reservation' });
-            }
-            if (this.changes === 0) {
-              return res.status(404).json({ success: false, message: 'Reservation not found' });
-            }
-            res.json({ success: true, message: 'Reservation deleted successfully' });
-          });
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to fetch reservation'
         });
       }
       if (!row) {
-        return res.status(404).json({ 
-          success: false, 
-          message: 'Reservation not found' 
+        return res.status(404).json({
+          success: false,
+          message: 'Reservation not found'
         });
       }
       res.json({ success: true, data: row });
     }
   );
+});
+
+app.put('/api/reservations/:id', (req, res) => {
+  const { name, email, date, time = '19:30', guests, requests, status } = req.body;
+  const validationErrors = validateReservation({ name, email, date, time, guests });
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ success: false, errors: validationErrors });
+  }
+
+  db.run(
+    `UPDATE reservations
+     SET name = ?, email = ?, date = ?, time = ?, guests = ?, requests = ?, status = ?
+     WHERE id = ?`,
+    [name.trim(), email.trim(), date, time, guests, requests || '', status || 'confirmed', req.params.id],
+    function(err) {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ success: false, message: 'Failed to update reservation' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ success: false, message: 'Reservation not found' });
+      }
+      res.json({ success: true, message: 'Reservation updated successfully' });
+    }
+  );
+});
+
+app.delete('/api/reservations/:id', (req, res) => {
+  db.run(`DELETE FROM reservations WHERE id = ?`, [req.params.id], function(err) {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ success: false, message: 'Failed to delete reservation' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ success: false, message: 'Reservation not found' });
+    }
+    res.json({ success: true, message: 'Reservation deleted successfully' });
+  });
 });
 
 // Newsletter
