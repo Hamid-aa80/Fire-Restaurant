@@ -1,6 +1,7 @@
 """Settings for the Fire_Restaurant Django application."""
 
 import os
+import sys
 from pathlib import Path
 
 import dj_database_url
@@ -8,10 +9,12 @@ from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ON_HEROKU = "DYNO" in os.environ
+BUILD_STATIC_ONLY = "collectstatic" in sys.argv
 DEBUG = os.environ.get("DJANGO_DEBUG", "false" if ON_HEROKU else "true").lower() in {"true", "1", "yes"}
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 if not SECRET_KEY:
-    if not DEBUG:
+    # Heroku runs collectstatic at build time, before config vars are available.
+    if not DEBUG and not BUILD_STATIC_ONLY:
         raise ImproperlyConfigured("Set DJANGO_SECRET_KEY when DEBUG is false.")
     SECRET_KEY = "local-development-key-change-before-deployment"
 ALLOWED_HOSTS = [
@@ -72,7 +75,7 @@ WSGI_APPLICATION = "salt_smoke.wsgi.application"
 ASGI_APPLICATION = "salt_smoke.asgi.application"
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
-if not DEBUG and not DATABASE_URL:
+if not DEBUG and not DATABASE_URL and not BUILD_STATIC_ONLY:
     raise ImproperlyConfigured(
         "Set DATABASE_URL to a persistent PostgreSQL database when DEBUG is false. "
         "Heroku dyno filesystems cannot be used for production SQLite data."
@@ -80,13 +83,14 @@ if not DEBUG and not DATABASE_URL:
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'database.db'}" if DEBUG else None,
+        default=f"sqlite:///{BASE_DIR / 'database.db'}" if DEBUG or BUILD_STATIC_ONLY else None,
         conn_max_age=600,
         conn_health_checks=True,
     )
 }
 if (
     not DEBUG
+    and not BUILD_STATIC_ONLY
     and DATABASES["default"]["ENGINE"] != "django.db.backends.postgresql"
 ):
     raise ImproperlyConfigured(
