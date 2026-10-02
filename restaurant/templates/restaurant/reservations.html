@@ -1,0 +1,151 @@
+{% extends "restaurant/base.html" %}
+
+{% block title %}{% if editing %}Edit reservation{% else %}My reservations{% endif %} | Salt &amp; Smoke{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <section class="col-lg-7">
+        <div class="card p-4">
+            <h1 class="h2">{% if editing %}Edit your reservation{% else %}Book a table{% endif %}</h1>
+            <p class="text-muted">Choose a future date and time. Each table seats up to four guests.</p>
+            <p>Signed in as <strong>{{ customer.name }}</strong> ({{ customer.email }})</p>
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="{{ form.date.id_for_label }}">Date</label>
+                        {{ form.date }}
+                        {% for error in form.date.errors %}<div class="text-warning">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="{{ form.time.id_for_label }}">Time</label>
+                        {{ form.time }}
+                        {% for error in form.time.errors %}<div class="text-warning">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="{{ form.guests.id_for_label }}">Guests (1–4)</label>
+                        {{ form.guests }}
+                        {% for error in form.guests.errors %}<div class="text-warning">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="{{ form.table.id_for_label }}">Available table</label>
+                        <select class="form-select" name="table" id="id_table" required>
+                            <option value="">Choose an available table</option>
+                            {% for table in tables %}
+                                {% if table.available %}
+                                    <option value="{{ table.id }}" {% if form.table.value|stringformat:"s" == table.id|stringformat:"s" %}selected{% endif %}>
+                                        Table {{ table.table_number }} — {{ table.seats }} seats
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% for error in form.table.errors %}<div class="text-warning">{{ error }}</div>{% endfor %}
+                        <div id="availability-message" class="form-text text-muted" aria-live="polite">
+                            {{ tables|length }} tables are configured. Choose a date and time to see which are available.
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="{{ form.requests.id_for_label }}">Special requests</label>
+                        {{ form.requests }}
+                        {% for error in form.requests.errors %}<div class="text-warning">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-12 d-flex gap-2">
+                        <button class="btn btn-warning" type="submit">{% if editing %}Save changes{% else %}Book table{% endif %}</button>
+                        {% if editing %}<a class="btn btn-outline-light" href="{% url 'reservation-dashboard' %}">Cancel edit</a>{% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card p-4 mt-4">
+            <h2 class="h4">Tables for this time</h2>
+            <div class="row row-cols-2 row-cols-md-4 g-2" id="table-status-list">
+                {% for table in tables %}
+                    <div class="col">
+                        <div class="border rounded p-2 {% if table.available %}border-success{% else %}border-secondary{% endif %}">
+                            Table {{ table.table_number }}<br>
+                            <small>{{ table.seats }} seats · {% if table.available %}Available{% else %}Unavailable{% endif %}</small>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">Select a valid future date and time to view the 20 tables.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {% if not editing %}
+    <section class="col-lg-5">
+        <div class="card p-4">
+            <h2 class="h3">Your reservations</h2>
+            {% for reservation in reservations %}
+                <article class="border-bottom py-3">
+                    <p class="mb-1"><strong>Table {{ reservation.table.table_number }}</strong> · {{ reservation.date }} at {{ reservation.time|time:"H:i" }}</p>
+                    <p class="text-muted mb-2">{{ reservation.guests }} guests{% if reservation.requests %} · {{ reservation.requests }}{% endif %}</p>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-light" href="{% url 'reservation-edit' reservation.id %}">Edit</a>
+                        <form method="post" action="{% url 'reservation-delete' reservation.id %}" onsubmit="return confirm('Delete this reservation?');">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </article>
+            {% empty %}
+                <p class="text-muted mb-0">You do not have any reservations yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+<script>
+    const dateInput = document.getElementById("id_date");
+    const timeInput = document.getElementById("id_time");
+    const guestsInput = document.getElementById("id_guests");
+    const tableSelect = document.getElementById("id_table");
+    const statusList = document.getElementById("table-status-list");
+    const availabilityMessage = document.getElementById("availability-message");
+    const availabilityUrl = "{{ availability_url|escapejs }}";
+
+    async function refreshAvailableTables() {
+        if (!dateInput.value || !timeInput.value || !guestsInput.value) return;
+        const params = new URLSearchParams({
+            date: dateInput.value,
+            time: timeInput.value,
+            guests: guestsInput.value
+        });
+        try {
+            const response = await fetch(`${availabilityUrl}?${params}`);
+            const result = await response.json();
+            if (!response.ok) {
+                availabilityMessage.textContent = (result.errors || ["Choose a future date and time."]).join(" ");
+                return;
+            }
+            const selected = tableSelect.value;
+            tableSelect.replaceChildren(new Option("Choose an available table", ""));
+            statusList.replaceChildren();
+            for (const table of result.tables) {
+                const status = table.available ? "Available" : "Unavailable";
+                if (table.available) {
+                    const option = new Option(`Table ${table.table_number} — ${table.seats} seats`, table.id);
+                    option.selected = String(table.id) === selected;
+                    tableSelect.add(option);
+                }
+                const column = document.createElement("div");
+                column.className = "col";
+                const tile = document.createElement("div");
+                tile.className = `border rounded p-2 ${table.available ? "border-success" : "border-secondary"}`;
+                const label = document.createElement("small");
+                label.textContent = `${table.seats} seats · ${status}`;
+                tile.append(`Table ${table.table_number}`, document.createElement("br"), label);
+                column.append(tile);
+                statusList.append(column);
+            }
+            availabilityMessage.textContent = `${result.availableCount} of ${result.tables.length} tables available.`;
+        } catch (error) {
+            availabilityMessage.textContent = "Table availability could not be loaded. Please retry.";
+        }
+    }
+
+    [dateInput, timeInput, guestsInput].forEach(input => input.addEventListener("change", refreshAvailableTables));
+</script>
+{% endblock %}
