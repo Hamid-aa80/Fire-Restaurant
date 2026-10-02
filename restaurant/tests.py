@@ -332,6 +332,12 @@ class CustomerApiTests(TestCase):
 
 
 class StaffApiTests(TestCase):
+    def test_django_admin_login_page_renders_for_anonymous_users(self):
+        response = self.client.get("/admin/login/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="username"')
+
     def setUp(self):
         self.staff_user = get_user_model().objects.create_user(
             username="restaurant-manager",
