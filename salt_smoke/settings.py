@@ -7,7 +7,8 @@ import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() in {"true", "1", "yes"}
+ON_HEROKU = "DYNO" in os.environ
+DEBUG = os.environ.get("DJANGO_DEBUG", "false" if ON_HEROKU else "true").lower() in {"true", "1", "yes"}
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 if not SECRET_KEY:
     if not DEBUG:
