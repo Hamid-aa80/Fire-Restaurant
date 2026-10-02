@@ -21,6 +21,8 @@ ALLOWED_HOSTS = [
     ).split(",")
     if host.strip()
 ]
+if "fire-restaurant-583481b558bc.herokuapp.com" not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append("fire-restaurant-583481b558bc.herokuapp.com")
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
     for origin in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")

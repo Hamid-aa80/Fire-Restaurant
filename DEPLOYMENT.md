@@ -37,8 +37,8 @@ below use the Heroku app name `fire-restaurant`:
 heroku config:set \
   DJANGO_SECRET_KEY='paste-the-generated-secret-here' \
   DJANGO_DEBUG=false \
-  DJANGO_ALLOWED_HOSTS='fire-restaurant.herokuapp.com' \
-  DJANGO_CSRF_TRUSTED_ORIGINS='https://fire-restaurant.herokuapp.com' \
+  DJANGO_ALLOWED_HOSTS='fire-restaurant.herokuapp.com,fire-restaurant-583481b558bc.herokuapp.com' \
+  DJANGO_CSRF_TRUSTED_ORIGINS='https://fire-restaurant.herokuapp.com,https://fire-restaurant-583481b558bc.herokuapp.com' \
   --app fire-restaurant
 ```
 
