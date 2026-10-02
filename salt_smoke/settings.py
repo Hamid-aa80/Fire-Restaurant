@@ -75,21 +75,26 @@ WSGI_APPLICATION = "salt_smoke.wsgi.application"
 ASGI_APPLICATION = "salt_smoke.asgi.application"
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
-if not DEBUG and not DATABASE_URL and not BUILD_STATIC_ONLY:
+REQUIRE_PERSISTENT_DATABASE = ON_HEROKU or not DEBUG
+if REQUIRE_PERSISTENT_DATABASE and not DATABASE_URL and not BUILD_STATIC_ONLY:
     raise ImproperlyConfigured(
-        "Set DATABASE_URL to a persistent PostgreSQL database when DEBUG is false. "
+        "Set DATABASE_URL to a persistent PostgreSQL database in production. "
         "Heroku dyno filesystems cannot be used for production SQLite data."
     )
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'database.db'}" if DEBUG or BUILD_STATIC_ONLY else None,
+        default=(
+            f"sqlite:///{BASE_DIR / 'database.db'}"
+            if (DEBUG and not ON_HEROKU) or BUILD_STATIC_ONLY
+            else None
+        ),
         conn_max_age=600,
         conn_health_checks=True,
     )
 }
 if (
-    not DEBUG
+    REQUIRE_PERSISTENT_DATABASE
     and not BUILD_STATIC_ONLY
     and DATABASES["default"]["ENGINE"] != "django.db.backends.postgresql"
 ):

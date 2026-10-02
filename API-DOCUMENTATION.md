@@ -540,11 +540,12 @@ python manage.py createsuperuser
 ### Database
 
 Local development uses SQLite at `database.db` by default. Production requires
-a persistent PostgreSQL database configured with `DATABASE_URL`; when
-`DJANGO_DEBUG=false`, startup fails rather than silently using SQLite on an
-ephemeral filesystem. The initial migration reuses the existing reservation,
-newsletter, and menu tables when available. A new database receives those
-tables through the same migration command.
+a persistent PostgreSQL database configured with `DATABASE_URL`; Heroku
+requires it regardless of the `DJANGO_DEBUG` setting, and other production
+deployments require it when `DJANGO_DEBUG=false`. Startup fails rather than
+silently using SQLite on an ephemeral filesystem. The initial migration reuses
+the existing reservation, newsletter, and menu tables when available. A new
+database receives those tables through the same migration command.
 
 ---
 
