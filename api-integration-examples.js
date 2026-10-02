@@ -1,5 +1,5 @@
 /**
- * Salt & Smoke - Frontend API Integration Examples
+ * Fire_Restaurant - Frontend API Integration Examples
  * 
  * This file shows how to integrate the API with your existing frontend forms.
  * These are example functions you can adapt into your main.js

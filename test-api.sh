@@ -2,7 +2,7 @@
 
 API_URL="http://localhost:5000/api"
 
-echo "🧪 Testing Salt & Smoke API Endpoints"
+echo "🧪 Testing Fire_Restaurant API Endpoints"
 echo "======================================"
 
 echo -e "\n✅ 1. Health Check"

@@ -1,5 +1,5 @@
 /**
- * Salt & Smoke API Client
+ * Fire_Restaurant API Client
  * Helper functions for frontend to communicate with the API
  */
 

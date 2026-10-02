@@ -1,8 +1,8 @@
-# Salt & Smoke API Documentation
+# Fire_Restaurant API Documentation
 
 ## Overview
 
-The Salt & Smoke API is a backend service for managing reservations, newsletter signups, and menu items for the Salt & Smoke restaurant.
+The Fire_Restaurant API is a backend service for managing reservations, newsletter signups, and menu items for the Fire_Restaurant restaurant.
 
 ## Getting Started
 

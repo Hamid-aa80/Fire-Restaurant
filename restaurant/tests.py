@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.db.models.deletion import ProtectedError
 from django.test import Client, TestCase
+from django.test.utils import override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -51,7 +52,17 @@ class CustomerApiTests(TestCase):
             self.client.get(reverse("api-health")).json(),
             {"status": "API is running"},
         )
-        self.assertContains(self.client.get(reverse("home")), "<title>Salt & Smoke</title>")
+        self.assertContains(self.client.get(reverse("home")), "<title>Fire_Restaurant</title>")
+
+    @override_settings(DEBUG=False, SECURE_SSL_REDIRECT=False)
+    def test_frontend_assets_are_served_in_production_mode(self):
+        css = self.client.get("/style.css")
+        image = self.client.get("/assets/img/favicon.svg")
+
+        self.assertEqual(css.status_code, 200)
+        self.assertEqual(css["Content-Type"], "text/css")
+        self.assertEqual(image.status_code, 200)
+        self.assertEqual(image["Content-Type"], "image/svg+xml")
 
     def test_reservation_creation_uses_authenticated_customer_identity(self):
         response = self.create_reservation(

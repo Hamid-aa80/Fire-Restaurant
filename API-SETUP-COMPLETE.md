@@ -1,4 +1,4 @@
-# Salt & Smoke Django API
+# Fire_Restaurant Django API
 
 The backend is implemented with Django and SQLite. Django models define
 reservations, newsletter signups, and menu items; Django forms validate API

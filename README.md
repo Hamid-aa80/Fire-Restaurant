@@ -1,7 +1,7 @@
-# Salt & Smoke
+# Fire_Restaurant
 ---
 
-Salt & Smoke is an interactive restaurant web application built as a portfolio project. It helps users browse dishes, book a table, subscribe to updates, and submit feedback in a fast, mobile-friendly experience.
+Fire_Restaurant is an interactive restaurant web application built as a portfolio project. It helps users browse dishes, book a table, subscribe to updates, and submit feedback in a fast, mobile-friendly experience.
 
 ## Quick Start
 ---
@@ -53,8 +53,8 @@ python manage.py runserver 0.0.0.0:5000
 ## Live Links
 ---
 
-- **Live site:** https://hamid-aa80.github.io/Salt---Smoke/
-- **Repository:** https://github.com/Hamid-aa80/Salt---Smoke
+- **Live site:** https://hamid-aa80.github.io/Fire-Restaurant/
+- **Repository:** https://github.com/Hamid-aa80/Fire-Restaurant
 
 ## Project Purpose
 ---
@@ -85,7 +85,7 @@ A clear purpose:
 ## Target Audience
 ---
 
-🎯 Salt & Smoke — Target Audience Overview
+🎯 Fire_Restaurant — Target Audience Overview
 
 
 ❤️ 1. Couples Seeking Premium Date‑Night Experiences
@@ -111,10 +111,10 @@ Friends who want a stylish, warm place to meet.
 • Enjoy craft beer, cocktails, shared plates
 • Prefer venues with atmosphere over loud bars
 
-🌙 4. Local Watford Residents Seeking Something “Different”
+🌙 4. Local London Residents Seeking Something “Different”
 People tired of the same chain restaurants.
 • Ages 28–55
-• Want a unique, premium dining option in Watford
+• Want a unique, premium dining option in London
 • Appreciate independent brands with personality
 • Seek quality, consistency, and a memorable environment
 
@@ -144,7 +144,7 @@ People who want quality without the stiffness of fine dining.
 ## User Goals
 ---
 
-🎯 Salt & Smoke — User Goals
+🎯 Fire_Restaurant — User Goals
 
 ❤️ 1. To Have a Memorable Date Night
 Your guests want a place that feels intimate, cinematic, and special.
@@ -192,10 +192,10 @@ Your brand is built for that.
 ## Business and Site Owner Goals
 ---
 
-🎯 Salt & Smoke — Business & Site Owner Goals
+🎯 Fire_Restaurant — Business & Site Owner Goals
 
 🔥 1. Deliver a Distinctive, Premium Dining Experience
-You want Salt & Smoke to stand out in Watford as a unique, cinematic, fire‑kissed smokehouse.
+You want Fire_Restaurant to stand out in London as a unique, cinematic, fire‑kissed smokehouse.
 This means:
 • Consistent ambience
 • Signature flavours
@@ -223,7 +223,7 @@ Your goal is to create a place people return to for:
 → Customer loyalty plan
 
 🌙 4. Establish a Recognisable, Cinematic Brand
-Salt & Smoke should be instantly identifiable by its:
+Fire_Restaurant should be instantly identifiable by its:
 • Dark‑premium visuals
 • Fire‑kissed identity
 • Bokeh ambience
@@ -247,7 +247,7 @@ Your goals include:
 • Creating a positive, stable work culture
 → Staff training plan
 
-📍 7. Position Salt & Smoke as a Watford Destination
+📍 7. Position Fire_Restaurant as a London Destination
 You want the restaurant to become:
 • A go‑to date‑night spot
 • A local favourite
@@ -274,7 +274,7 @@ Behind the scenes, your goals include:
 → Operational plan
 
 🚀 10. Build a Scalable Concept for Future Expansion
-Salt & Smoke should be designed with growth in mind:
+Fire_Restaurant should be designed with growth in mind:
 • Second location potential
 • Franchise or flagship model
 • Expandable brand identity
@@ -284,7 +284,7 @@ Salt & Smoke should be designed with growth in mind:
 ## User Stories
 ---
 
-🔥 Salt & Smoke — User Stories
+🔥 Fire_Restaurant — User Stories
 
 ❤️ 1. Date‑Night Couple
 • As a couple, I want a warm, intimate table, so that we can connect and enjoy a romantic evening together.
@@ -313,13 +313,13 @@ Salt & Smoke should be designed with growth in mind:
 • As a regular, I want friendly, warm staff, so that I feel welcomed every time I visit.
 
 🌙 7. Local Resident
-• As a local, I want a unique restaurant in Watford, so that I don’t have to travel far for a premium experience.
-• As a returning guest, I want consistency, so that Salt & Smoke becomes my go‑to spot.
+• As a local, I want a unique restaurant in London, so that I don’t have to travel far for a premium experience.
+• As a returning guest, I want consistency, so that Fire_Restaurant becomes my go‑to spot.
 
 ## Core Features (Brand Experience)
 ---
 
-🔥 Salt & Smoke — Core Features
+🔥 Fire_Restaurant — Core Features
 
 🍽️ Fire‑Kissed Signature Menu
 • Smoked, charred, flame‑finished dishes
@@ -396,7 +396,7 @@ Your digital presence matches your physical one.
 ## Future Features
 ---
 
-🔥 Salt & Smoke — Signature Food Experience
+🔥 Fire_Restaurant — Signature Food Experience
 
 🍖 1. Fire‑Kissed Cooking
 The defining technique of the brand.
@@ -433,7 +433,7 @@ The food must look as good as it tastes.
 Every dish is a photo moment.
 
 🌶️ 5. Bold, Confident Flavour Profiles
-Salt & Smoke is not subtle — it’s intentional.
+Fire_Restaurant is not subtle — it’s intentional.
 • Sweet heat
 • Deep umami
 • Charred caramelisation
@@ -459,7 +459,7 @@ Food and drink work together.
 Pairings elevate the entire experience.
 
 ❤️ 8. Emotional Eating Experience
-Salt & Smoke food is designed to make people feel:
+Fire_Restaurant food is designed to make people feel:
 • Warm
 • Indulged
 • Connected
@@ -609,10 +609,10 @@ This project was developed using [VS Code](https://code.visualstudio.com/), comm
 
 This site is hosted using GitHub pages, deployed directly from the master branch. The deployed site will update automatically upon new commits to the master branch. In order for the site to deploy correctly on GitHub pages, the landing page must be named index.html.
 
-These are the steps that can be taken to deploy the page on GitHub Pages from its [GitHub repository](https://hamid-aa80.github.io/Salt---Smoke/):
+These are the steps that can be taken to deploy the page on GitHub Pages from its [GitHub repository](https://github.com/Hamid-aa80/Fire-Restaurant):
 
 1. Log into GitHub. 
-2. From the list of repositories on the screen, select [https://hamid-aa80.github.io/Salt---Smoke/] 
+2. From the list of repositories on the screen, select [https://github.com/Hamid-aa80/Fire-Restaurant]
 3. From the menu items near the top of the page, select Settings. 
 4. Scroll down to the GitHub Pages section. 
 5. Under Source the drop-down menu should display Deploy from a branch 
@@ -895,6 +895,15 @@ Health and docs:
 - `http://localhost:5000/api/health`
 - `http://localhost:5000/api/docs`
 
+### Deploy to Heroku
+
+The project includes a Gunicorn `Procfile`, a release-phase database migration,
+PostgreSQL URL configuration, and WhiteNoise static-file serving. Follow
+[DEPLOYMENT.md](DEPLOYMENT.md) to attach Heroku Postgres, configure production
+secrets and hostnames, deploy, and create a new production admin account.
+Heroku's filesystem is temporary, so production must not use the local SQLite
+database.
+
 ### Run tests
 
 ```bash
@@ -930,7 +939,7 @@ README-img/
 
 Frontend deployment is on GitHub Pages:
 
-- https://hamid-aa80.github.io/Salt---Smoke/
+- https://hamid-aa80.github.io/Fire-Restaurant/
 
 ## Disclaimer
 ---
