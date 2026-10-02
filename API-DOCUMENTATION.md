@@ -539,11 +539,12 @@ python manage.py createsuperuser
 
 ### Database
 
-The Django models use SQLite at `database.db` by default. The initial migration
-reuses the existing reservation, newsletter, and menu tables. A new database
-will receive those tables through the same migration command.
-
-Set `DATABASE_NAME` to use a different database file.
+Local development uses SQLite at `database.db` by default. Production requires
+a persistent PostgreSQL database configured with `DATABASE_URL`; when
+`DJANGO_DEBUG=false`, startup fails rather than silently using SQLite on an
+ephemeral filesystem. The initial migration reuses the existing reservation,
+newsletter, and menu tables when available. A new database receives those
+tables through the same migration command.
 
 ---
 

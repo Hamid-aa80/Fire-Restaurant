@@ -70,15 +70,27 @@ TEMPLATES = [
 WSGI_APPLICATION = "salt_smoke.wsgi.application"
 ASGI_APPLICATION = "salt_smoke.asgi.application"
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if not DEBUG and not DATABASE_URL:
+    raise ImproperlyConfigured(
+        "Set DATABASE_URL to a persistent PostgreSQL database when DEBUG is false. "
+        "Heroku dyno filesystems cannot be used for production SQLite data."
+    )
+
 DATABASES = {
-    "default": {
-        **dj_database_url.config(
-            default=f"sqlite:///{BASE_DIR / 'database.db'}",
-            conn_max_age=600,
-            conn_health_checks=True,
-        ),
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'database.db'}" if DEBUG else None,
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
+if (
+    not DEBUG
+    and DATABASES["default"]["ENGINE"] != "django.db.backends.postgresql"
+):
+    raise ImproperlyConfigured(
+        "Production must use a persistent PostgreSQL database configured by DATABASE_URL."
+    )
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
