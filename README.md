@@ -38,7 +38,7 @@ PostgreSQL through `DATABASE_URL`; see [Heroku Deployment](#heroku-deployment).
 - [User Stories](#user-stories)
 - [Core Features (Brand Experience)](#core-features-brand-experience)
 - [Future Features](#future-features)
-- [Wireframes](#wireframes)
+- [Mockups](#mockups)
 - [Color Scheme](#color-scheme)
 - [Contrast Checker](#contrast-checker)
 - [Technologies Used](#technologies-used)
@@ -510,7 +510,10 @@ reservation-management application. The implementation and regression
 coverage are documented under [Features (Application)](#features-application)
 and [Testing](#testing).
 
-### Original wireframe mock-ups
+### Mockups
+
+These original wireframe mockups show the early design across mobile, tablet,
+and desktop layouts.
 
 ### Mobile Device
 
