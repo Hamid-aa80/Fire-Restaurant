@@ -113,3 +113,34 @@ The first migration creates the Django schema and seeds twenty four-seat
 restaurant tables. Existing local SQLite customers, reservations, and menu
 records are not copied to Postgres; migrate any data that should be retained
 using a separate, reviewed data-transfer procedure.
+
+## Troubleshooting registration database errors
+
+If registration raises `OperationalError: no such table: auth_user`, Django's
+authentication migrations have not been applied to the database used by the
+web dyno. The live application must use the Heroku Postgres `DATABASE_URL`;
+running migrations against a one-off dyno's local SQLite file will not repair
+the web dyno's ephemeral filesystem.
+
+1. In the Heroku Dashboard, confirm that Heroku Postgres is attached and
+   `DATABASE_URL` is present. Do not print or share its value.
+2. Deploy the current repository revision. The `Procfile` release phase runs
+   `python manage.py migrate --noinput` against the configured database before
+   the new web release is promoted.
+3. Confirm the release succeeded in Heroku's deploy/release logs. If the
+   current release already has the PostgreSQL settings and `DATABASE_URL` is
+   confirmed, run the migration manually as a one-time repair:
+
+   ```bash
+   heroku run --app fire-restaurant-583481b558bc python manage.py migrate --noinput
+   ```
+
+4. Verify migrations are applied and retry registration:
+
+   ```bash
+   heroku run --app fire-restaurant-583481b558bc python manage.py showmigrations
+   ```
+
+Do not work around this error by creating an `auth_user` table manually or by
+running migrations against SQLite; Django migrations create the complete
+authentication and application schema in a consistent state.
