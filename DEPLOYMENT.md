@@ -63,6 +63,9 @@ Do not commit the secret key or local SQLite database. The Django secure
 cookies, HTTPS redirect, and proxy settings are configured for Heroku's TLS
 router. The release phase in `Procfile` applies migrations against Postgres.
 The Python build process collects Django static files, which WhiteNoise serves.
+Do not set `DISABLE_COLLECTSTATIC=1`: production uses Django's manifest-based
+static storage, and skipping collection causes the built-in admin login page
+to fail while rendering its CSS references.
 
 ## 3. Deploy
 
@@ -144,3 +147,19 @@ the web dyno's ephemeral filesystem.
 Do not work around this error by creating an `auth_user` table manually or by
 running migrations against SQLite; Django migrations create the complete
 authentication and application schema in a consistent state.
+
+## Troubleshooting admin login server errors
+
+If `/admin/login/` returns HTTP 500 and the application logs show
+`Missing staticfiles manifest entry for 'admin/css/base.css'`, Django static
+collection was skipped. Remove the override and deploy a new slug so Heroku's
+Python buildpack can collect the admin assets:
+
+```bash
+heroku config:unset DISABLE_COLLECTSTATIC --app fire-restaurant-583481b558bc
+git push heroku HEAD:main
+```
+
+The config change restarts the current release; the Git push rebuilds the slug
+and generates the manifest. Verify the admin login page returns HTTP 200 and
+the `/static/admin/css/base.css` asset is served after deployment.
