@@ -97,6 +97,12 @@ def _customer_for_user(user):
 
 
 def _table_availability(reservation_date, reservation_time, guests, exclude=None):
+    now = timezone.localtime()
+    if reservation_date < now.date() or (
+        reservation_date == now.date() and reservation_time <= now.time()
+    ):
+        return []
+
     booked_tables = Reservation.objects.filter(
         date=reservation_date,
         time=reservation_time,
@@ -114,6 +120,19 @@ def _table_availability(reservation_date, reservation_time, guests, exclude=None
         }
         for table in RestaurantTable.objects.filter(is_active=True)
     ]
+
+
+def _availability_exclusion(request, customer):
+    reservation_id = request.GET.get("reservation")
+    if not reservation_id:
+        return None
+    if not reservation_id.isdecimal():
+        raise Http404
+
+    filters = {"pk": reservation_id}
+    if not request.user.is_staff:
+        filters["customer"] = customer
+    return get_object_or_404(Reservation, **filters)
 
 
 def _reservation_form_initial(reservation=None):
@@ -159,11 +178,13 @@ def _reservation_page_context(form, reservation=None):
     return {
         "form": form,
         "tables": tables,
+        "available_count": sum(table["available"] for table in tables),
         "selected_date": selected_date or "",
         "selected_time": selected_time or "",
         "selected_guests": guests,
         "editing": reservation,
         "availability_url": reverse("reservation-availability"),
+        "availability_reservation_id": reservation.pk if reservation else None,
     }
 
 
@@ -321,6 +342,7 @@ def reservation_availability(request):
         form.cleaned_data["date"],
         form.cleaned_data["time"],
         form.cleaned_data["guests"],
+        exclude=_availability_exclusion(request, customer),
     )
     return JsonResponse(
         {
@@ -519,6 +541,7 @@ def reservation_availability_api(request):
         form.cleaned_data["date"],
         form.cleaned_data["time"],
         form.cleaned_data["guests"],
+        exclude=_availability_exclusion(request, _customer_for_user(request.user)),
     )
     return JsonResponse(
         {

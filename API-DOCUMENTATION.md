@@ -79,7 +79,10 @@ obtained from the availability endpoint.
 **GET** `/api/reservations/availability?date=2027-12-25&time=19:30&guests=4`
 
 Returns the configured tables and whether each can accommodate the selected
-party at that date and time. Login is required.
+party at that date and time. Past dates/times are rejected; occupied tables
+are marked unavailable and excluded from the available count. Login is
+required. When editing a reservation, pass its own ID as `reservation=<id>` so
+that booking's current table remains available to select.
 
 **Response (Success - 201):**
 ```json
@@ -89,6 +92,9 @@ party at that date and time. Login is required.
   "reservationId": 1
 }
 ```
+
+Validation failures return HTTP 400, unauthenticated requests return HTTP 401,
+and a concurrent database uniqueness conflict returns HTTP 409.
 
 **Response (Error - 400/401/409):**
 ```json
@@ -105,6 +111,7 @@ party at that date and time. Login is required.
 - `guests`: Required, integer between 1 and 4
 - `requests`: Optional, special dining requests
 - Past dates/times, occupied table slots, and repeat bookings by the same customer for the same slot are rejected.
+- A database uniqueness constraint on `(table, date, time)` prevents simultaneous customers from claiming the same table slot; a conflicting request receives HTTP 409.
 
 ---
 

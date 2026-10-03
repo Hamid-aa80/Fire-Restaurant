@@ -74,6 +74,7 @@ class ReservationForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.customer = customer
         self.reservation = reservation
+        self.fields["date"].widget.attrs["min"] = timezone.localdate().isoformat()
         self.fields["table"].queryset = RestaurantTable.objects.filter(is_active=True)
 
     def clean_date(self):

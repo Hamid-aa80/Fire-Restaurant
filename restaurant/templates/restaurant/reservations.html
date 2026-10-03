@@ -42,7 +42,7 @@
                         </select>
                         {% for error in form.table.errors %}<div class="text-warning">{{ error }}</div>{% endfor %}
                         <div id="availability-message" class="form-text text-muted" aria-live="polite">
-                            {{ tables|length }} tables are configured. Choose a date and time to see which are available.
+                            {{ available_count }} of {{ tables|length }} tables are available for this date and time.
                         </div>
                     </div>
                     <div class="col-12">
@@ -105,6 +105,7 @@
     const statusList = document.getElementById("table-status-list");
     const availabilityMessage = document.getElementById("availability-message");
     const availabilityUrl = "{{ availability_url|escapejs }}";
+    const reservationId = "{{ availability_reservation_id|default:''|escapejs }}";
 
     async function refreshAvailableTables() {
         if (!dateInput.value || !timeInput.value || !guestsInput.value) return;
@@ -113,6 +114,7 @@
             time: timeInput.value,
             guests: guestsInput.value
         });
+        if (reservationId) params.set("reservation", reservationId);
         try {
             const response = await fetch(`${availabilityUrl}?${params}`);
             const result = await response.json();

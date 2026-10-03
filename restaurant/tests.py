@@ -2,6 +2,7 @@ import json
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError, transaction
 from django.db.models.deletion import ProtectedError
 from django.test import Client, TestCase
 from django.test.utils import override_settings
@@ -123,6 +124,29 @@ class CustomerApiTests(TestCase):
             302,
         )
 
+    def test_reservation_dashboard_disallows_past_dates_in_the_date_picker(self):
+        response = self.client.get(reverse("reservation-dashboard"))
+        self.assertContains(
+            response,
+            f'min="{timezone.localdate().isoformat()}"',
+        )
+        self.assertContains(response, "20 of 20 tables are available")
+
+        past_date_response = self.client.post(
+            reverse("reservation-dashboard"),
+            {
+                "date": (timezone.localdate() - timedelta(days=1)).isoformat(),
+                "time": "19:30",
+                "guests": 2,
+                "table": RestaurantTable.objects.get(table_number=1).pk,
+            },
+        )
+        self.assertContains(
+            past_date_response,
+            "Reservations cannot be made for past dates.",
+        )
+        self.assertFalse(Reservation.objects.exists())
+
     def test_availability_displays_all_twenty_tables(self):
         self.assertEqual(RestaurantTable.objects.count(), 20)
         response = self.client.get(
@@ -137,6 +161,45 @@ class CustomerApiTests(TestCase):
         self.assertEqual(response.json()["availableCount"], 20)
         self.assertEqual(len(response.json()["tables"]), 20)
         self.assertEqual({table["seats"] for table in response.json()["tables"]}, {4})
+
+    def test_availability_shows_booked_tables_and_excludes_current_booking_when_editing(self):
+        payload = self.reservation_payload()
+        created = self.create_reservation(payload)
+        reservation_id = created.json()["reservationId"]
+        availability_url = reverse("api-reservation-availability")
+        availability_params = {
+            "date": payload["date"],
+            "time": payload["time"],
+            "guests": payload["guests"],
+        }
+
+        availability = self.client.get(availability_url, availability_params).json()
+        self.assertEqual(availability["availableCount"], 19)
+        self.assertFalse(
+            next(table for table in availability["tables"] if table["id"] == payload["table"])[
+                "available"
+            ]
+        )
+
+        edit_availability = self.client.get(
+            reverse("reservation-availability"),
+            {**availability_params, "reservation": reservation_id},
+        )
+        self.assertEqual(edit_availability.status_code, 200)
+        self.assertEqual(edit_availability.json()["availableCount"], 20)
+        self.assertTrue(
+            next(
+                table
+                for table in edit_availability.json()["tables"]
+                if table["id"] == payload["table"]
+            )["available"]
+        )
+        api_edit_availability = self.client.get(
+            availability_url,
+            {**availability_params, "reservation": reservation_id},
+        )
+        self.assertEqual(api_edit_availability.status_code, 200)
+        self.assertEqual(api_edit_availability.json()["availableCount"], 20)
 
     def test_table_slot_and_customer_duplicate_slots_are_rejected(self):
         payload = self.reservation_payload()
@@ -153,6 +216,23 @@ class CustomerApiTests(TestCase):
         )
         self.assertEqual(customer_conflict.status_code, 400)
         self.assertEqual(Reservation.objects.count(), 1)
+
+    def test_database_constraint_prevents_concurrent_table_slot_duplicates(self):
+        payload = self.reservation_payload()
+        self.assertEqual(self.create_reservation(payload).status_code, 201)
+        _, other_customer = self.create_customer("other@example.com", "Other Guest")
+
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                Reservation.objects.create(
+                    customer=other_customer,
+                    table_id=payload["table"],
+                    name=other_customer.name,
+                    email=other_customer.email,
+                    date=payload["date"],
+                    time=payload["time"],
+                    guests=2,
+                )
 
     def test_past_date_time_and_parties_over_four_are_rejected(self):
         past_date = self.create_reservation(

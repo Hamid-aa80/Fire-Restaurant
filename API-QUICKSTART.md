@@ -58,10 +58,14 @@ users can subscribe to the newsletter and read menu items.
 
 ### Reservations
 
-- `GET /api/reservations/availability?date=YYYY-MM-DD&time=HH:MM&guests=2` — show availability (login required)
+- `GET /api/reservations/availability?date=YYYY-MM-DD&time=HH:MM&guests=2` — show availability (login required; pass `reservation=<id>` when editing that reservation)
 - `POST /api/reservations` — create for the logged-in customer
 - `GET /api/reservations` — list own reservations (staff see all)
 - `GET`, `PUT`, `DELETE /api/reservations/<id>` — manage an owned reservation (staff may manage all)
+
+Past dates and times are rejected. The database enforces one reservation per
+table/date/time, so simultaneous attempts to book the same slot cannot both
+succeed.
 
 ### Newsletter
 

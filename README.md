@@ -294,8 +294,15 @@ references point to automated tests in `restaurant/tests.py`.
   Coverage: `CustomerApiTests.test_customer_registration_login_and_dashboard`.
 - **Book a table:** As an authenticated customer, I want to check availability
   and create a reservation, so that I can arrange a visit online.
-  Coverage: `CustomerApiTests.test_availability_displays_all_twenty_tables`
+  Coverage: `CustomerApiTests.test_availability_displays_all_twenty_tables`,
+  `CustomerApiTests.test_availability_shows_booked_tables_and_excludes_current_booking_when_editing`,
   and `CustomerApiTests.test_reservation_creation_uses_authenticated_customer_identity`.
+- **Avoid booking errors:** As a customer, I want past dates and occupied table
+  slots rejected, so that availability is accurate and another customer
+  cannot take the same table at the same date and time.
+  Coverage: `CustomerApiTests.test_past_date_time_and_parties_over_four_are_rejected`,
+  `CustomerApiTests.test_table_slot_and_customer_duplicate_slots_are_rejected`,
+  and `CustomerApiTests.test_database_constraint_prevents_concurrent_table_slot_duplicates`.
 - **Manage my bookings:** As an authenticated customer, I want to edit or cancel
   my reservations and be prevented from changing another customer's bookings,
   so that I can manage my plans securely.
@@ -733,7 +740,7 @@ This application is built to deliver practical value to users:
 - Menu search + category filters + reset state
 - Customer login and registration with Django session authentication
 - Customer-only reservation dashboard with create, edit, and delete
-- Live availability for twenty four-seat tables, with duplicate and past-slot prevention
+- Live availability inventory for twenty four-seat tables, with past-date/time validation and database-enforced duplicate-slot prevention
 - Newsletter validation and duplicate-subscription handling
 - Feedback form with image constraints and preview
 - Django API (`restaurant/`): SQLite locally; persistent PostgreSQL in production
