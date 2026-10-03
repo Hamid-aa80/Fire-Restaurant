@@ -15,8 +15,10 @@ python manage.py migrate --fake-initial
 python manage.py runserver 0.0.0.0:5000
 ```
 
-The project reuses the existing `database.db` SQLite tables when available. If
-the tables are missing, Django creates them through its migrations.
+Local development uses SQLite at `database.db`. Migrations create the schema
+and can adopt compatible existing tables through Django's initial-migration
+handling. Production requires PostgreSQL configured through `DATABASE_URL`;
+the Heroku release phase applies migrations before serving traffic.
 
 - Website: `http://localhost:5000/`
 - Health check: `http://localhost:5000/api/health`

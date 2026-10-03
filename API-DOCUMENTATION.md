@@ -1,8 +1,9 @@
-# Fire_Restaurant API Documentation
+# Salt & Smoke API Documentation (Fire_Restaurant Project)
 
 ## Overview
 
-The Fire_Restaurant API is a backend service for managing reservations, newsletter signups, and menu items for the Fire_Restaurant restaurant.
+The Salt & Smoke API is the backend service in the Fire_Restaurant Django
+project. It manages reservations, newsletter signups, and menu items.
 
 ## Getting Started
 
@@ -459,34 +460,24 @@ keys. Database unique constraints prevent duplicate customer/date/time and
 table/date/time entries. The migration seeds 20 tables and assigns existing
 reservations without deleting booking records.
 
-The API uses SQLite with the following tables:
+Local development defaults to SQLite; production uses PostgreSQL configured
+through `DATABASE_URL`. Both databases use the same Django models and
+migrations. The application schema includes:
 
-### Reservations Table
-- `id` - Auto-increment ID
-- `name` - Customer name
-- `email` - Customer email
-- `date` - Reservation date
-- `time` - Reservation time
-- `guests` - Number of guests
-- `requests` - Special requests
-- `created_at` - Timestamp
-- `status` - Reservation status (confirmed)
+### Customers and reservations
+- `Customer`: optional unique link to a Django auth user, name, email, creation timestamp
+- `RestaurantTable`: unique table number, seat count, active flag
+- `Reservation`: customer and table foreign keys; booking-time name/email, date, time, guests, requests, creation timestamp, and status
+- Unique constraints prevent the same table or customer from being booked twice for the same date and time.
 
-### Newsletter Signups Table
-- `id` - Auto-increment ID
-- `email` - Subscriber email (unique)
-- `created_at` - Timestamp
-- `status` - Subscription status (subscribed)
+### Menu and newsletter
+- `MenuItem`: name, category, description, optional price and image, chef's-pick flag, creation timestamp
+- `NewsletterSignup`: unique email, creation timestamp, subscription status
 
-### Menu Items Table
-- `id` - Auto-increment ID
-- `name` - Item name
-- `category` - Item category
-- `description` - Item description
-- `price` - Item price
-- `image` - Image URL
-- `is_chefs_pick` - Boolean flag
-- `created_at` - Timestamp
+Django's built-in authentication tables store user accounts, password hashes,
+groups, and permissions. The initial migration creates twenty four-seat
+restaurant tables and safely assigns existing reservations when migrating a
+legacy database.
 
 ---
 

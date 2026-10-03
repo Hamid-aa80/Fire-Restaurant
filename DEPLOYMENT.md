@@ -1,16 +1,33 @@
 # Deploy Fire_Restaurant to Heroku
 
+The README's [Heroku Deployment](README.md#heroku-deployment) section is the
+complete, current deployment procedure, including repository preparation,
+dependency installation, environment configuration, Postgres migrations,
+deployment, and final verification. This guide provides the corresponding
+Heroku-specific commands.
+
 The app runs as a Django WSGI application on Gunicorn. Heroku Postgres is
 required for production data because Heroku dyno filesystems, including
 SQLite files, are ephemeral.
 
 ## 1. Create the Heroku app and database
 
-1. Install the Heroku CLI, sign in with `heroku login`, and create an app:
+1. Install the Heroku CLI and sign in:
 
    ```bash
-   heroku create fire-restaurant
+   heroku login
    ```
+
+   The live app is named `fire-restaurant-583481b558bc`. Connect its Git
+   remote:
+
+   ```bash
+   heroku git:remote --app fire-restaurant-583481b558bc
+   ```
+
+   For a new app instead, create a unique name with
+   `heroku create <app-name>` and substitute that name and hostname in the
+   remaining commands.
 
 2. In the Heroku Dashboard, attach a Heroku Postgres database to the app.
    Choose an available plan for your account. Heroku sets `DATABASE_URL`
@@ -19,7 +36,7 @@ SQLite files, are ephemeral.
    Playwright tooling):
 
    ```bash
-   heroku buildpacks:set heroku/python --app fire-restaurant
+   heroku buildpacks:set heroku/python --app fire-restaurant-583481b558bc
    ```
 
 ## 2. Set production configuration
@@ -31,15 +48,15 @@ python3 -c "import secrets; print(secrets.token_urlsafe(50))"
 ```
 
 Set the key and the exact app host/origin in Heroku config vars. The examples
-below use the Heroku app name `fire-restaurant`:
+below use the live app name `fire-restaurant-583481b558bc`:
 
 ```bash
 heroku config:set \
   DJANGO_SECRET_KEY='paste-the-generated-secret-here' \
   DJANGO_DEBUG=false \
-  DJANGO_ALLOWED_HOSTS='fire-restaurant.herokuapp.com,fire-restaurant-583481b558bc.herokuapp.com' \
-  DJANGO_CSRF_TRUSTED_ORIGINS='https://fire-restaurant.herokuapp.com,https://fire-restaurant-583481b558bc.herokuapp.com' \
-  --app fire-restaurant
+  DJANGO_ALLOWED_HOSTS='fire-restaurant-583481b558bc.herokuapp.com' \
+  DJANGO_CSRF_TRUSTED_ORIGINS='https://fire-restaurant-583481b558bc.herokuapp.com' \
+  --app fire-restaurant-583481b558bc
 ```
 
 Do not commit the secret key or local SQLite database. The Django secure
@@ -53,14 +70,23 @@ Commit and push the deployment files and application changes to the branch
 connected to Heroku. With the Heroku Git remote, deploy the current branch:
 
 ```bash
-git push heroku main
+git push heroku HEAD:main
 ```
 
 If the app is connected to GitHub, push the branch and deploy it from the
 Heroku Dashboard instead. Check the deploy and release logs:
 
 ```bash
-heroku logs --tail --app fire-restaurant
+heroku logs --tail --app fire-restaurant-583481b558bc
+```
+
+The `release` process runs `python manage.py migrate` against Postgres before
+the new release serves traffic. After deployment, confirm migrations and run
+the system check:
+
+```bash
+heroku run --app fire-restaurant-583481b558bc python manage.py showmigrations --plan
+heroku run --app fire-restaurant-583481b558bc python manage.py check
 ```
 
 ## 4. Create a management account
@@ -70,7 +96,7 @@ Production starts with a clean Postgres database; it does not receive the local
 after deploying:
 
 ```bash
-heroku run python manage.py createsuperuser --app fire-restaurant
+heroku run --app fire-restaurant-583481b558bc python manage.py createsuperuser
 ```
 
 Use `/admin/` to edit menu items and manage reservations and tables. Customer
@@ -78,10 +104,10 @@ registration is available at `/accounts/register/`.
 
 ## 5. Verify
 
-- Homepage: `https://fire-restaurant.herokuapp.com/`
-- Health: `https://fire-restaurant.herokuapp.com/api/health`
-- Admin: `https://fire-restaurant.herokuapp.com/admin/`
-- Customer registration: `https://fire-restaurant.herokuapp.com/accounts/register/`
+- Homepage: `https://fire-restaurant-583481b558bc.herokuapp.com/`
+- Health: `https://fire-restaurant-583481b558bc.herokuapp.com/api/health`
+- Admin: `https://fire-restaurant-583481b558bc.herokuapp.com/admin/`
+- Customer registration: `https://fire-restaurant-583481b558bc.herokuapp.com/accounts/register/`
 
 The first migration creates the Django schema and seeds twenty four-seat
 restaurant tables. Existing local SQLite customers, reservations, and menu

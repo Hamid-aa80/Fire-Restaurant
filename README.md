@@ -1,7 +1,11 @@
-# Fire_Restaurant
+# Salt & Smoke — Fire_Restaurant Project
 ---
 
-Fire_Restaurant is an interactive restaurant web application built as a portfolio project. It helps users browse dishes, book a table, subscribe to updates, and submit feedback in a fast, mobile-friendly experience.
+Fire_Restaurant is the repository and Django project name; Salt & Smoke is the
+customer-facing brand used by the application. This portfolio application lets
+users browse dishes, make and manage table reservations, register an account,
+subscribe to updates, and submit feedback in a mobile-friendly experience.
+Online ordering and delivery are not implemented.
 
 ## Quick Start
 ---
@@ -13,6 +17,9 @@ pip install -r requirements.txt
 python manage.py migrate --fake-initial
 python manage.py runserver 0.0.0.0:5000
 ```
+
+Local development uses SQLite (`database.db`) by default. Production requires
+PostgreSQL through `DATABASE_URL`; see [Heroku Deployment](#heroku-deployment).
 
 - App: `http://localhost:5000/`
 - API: `http://localhost:5000/api`
@@ -37,7 +44,6 @@ python manage.py runserver 0.0.0.0:5000
 - [Technologies Used](#technologies-used)
 - [Testing](#testing)
 - [Screenshots](#screenshots)
-- [Deployment (Original Process Notes)](#deployment-original-process-notes)
 - [Credits](#credits)
 - [Purpose and Value](#purpose-and-value)
 - [Features (Application)](#features-application)
@@ -46,46 +52,39 @@ python manage.py runserver 0.0.0.0:5000
 - [Technologies](#technologies)
 - [Installation and Usage](#installation-and-usage)
 - [Project Structure](#project-structure)
-- [Deployment (Current)](#deployment-current)
+- [Heroku Deployment](#heroku-deployment)
 - [Disclaimer](#disclaimer)
 - [Author](#author)
 
 ## Live Links
 ---
 
-- **Live site:** https://hamid-aa80.github.io/Fire-Restaurant/
+- **Live application:** https://fire-restaurant-583481b558bc.herokuapp.com/
 - **Repository:** https://github.com/Hamid-aa80/Fire-Restaurant
 
 ## Project Purpose
 ---
 
-🎯 Project Purpose (Clear Definition)
+Salt & Smoke gives diners a simple way to discover the restaurant, browse its
+menu, and make and manage table reservations online instead of relying on
+separate or in-person processes. It is designed for prospective and returning
+guests—especially people looking for a distinctive date-night or small-group
+dining experience—and for restaurant staff who manage the service.
 
-• Why is this project being undertaken?
-• What problem, need, or opportunity does it address?
+The restaurant is presented as a London-based concept; its location and
+contact details on the site are illustrative placeholders, not a verified
+operating venue. Audience descriptions use this fictional London setting.
 
-🧩 What a Strong Project Purpose Includes
-A well‑defined project purpose typically covers:
-• The need or problem the project addresses
-• The value it will create (financial, operational, customer, strategic)
-• The objectives the project must achieve
-• The boundaries of what is and isn’t included
-• The stakeholders and why it matters to them
-
-💡 Why Project Purpose Matters
-A clear purpose:
-• Aligns stakeholders around a shared understanding
-• Guides decisions throughout the project lifecycle
-• Prevents scope drift and misalignment
-• Motivates teams by showing the bigger picture
-
-📝 Example of a Project Purpose Statement
-“This project aims to redesign the company website to improve customer experience, increase online conversions, and strengthen brand credibility. It addresses declining engagement metrics and supports the company’s strategic goal of expanding digital presence.”
+The application brings menu discovery, account-based bookings, newsletter
+sign-up, and customer feedback together in one mobile-friendly experience.
+Staff can manage menu items and reservations through the Django admin. These
+features make it easier for guests to plan a visit and for staff to handle
+routine restaurant interactions in one place.
 
 ## Target Audience
 ---
 
-🎯 Fire_Restaurant — Target Audience Overview
+🎯 Salt & Smoke — Target Audience Overview
 
 
 ❤️ 1. Couples Seeking Premium Date‑Night Experiences
@@ -114,7 +113,7 @@ Friends who want a stylish, warm place to meet.
 🌙 4. Local London Residents Seeking Something “Different”
 People tired of the same chain restaurants.
 • Ages 28–55
-• Want a unique, premium dining option in London
+• Want a distinctive, premium-casual dining experience
 • Appreciate independent brands with personality
 • Seek quality, consistency, and a memorable environment
 
@@ -144,7 +143,7 @@ People who want quality without the stiffness of fine dining.
 ## User Goals
 ---
 
-🎯 Fire_Restaurant — User Goals
+🎯 Salt & Smoke — User Goals
 
 ❤️ 1. To Have a Memorable Date Night
 Your guests want a place that feels intimate, cinematic, and special.
@@ -192,10 +191,10 @@ Your brand is built for that.
 ## Business and Site Owner Goals
 ---
 
-🎯 Fire_Restaurant — Business & Site Owner Goals
+🎯 Salt & Smoke — Business & Site Owner Goals
 
 🔥 1. Deliver a Distinctive, Premium Dining Experience
-You want Fire_Restaurant to stand out in London as a unique, cinematic, fire‑kissed smokehouse.
+You want Salt & Smoke to stand out as a unique, cinematic, fire‑kissed smokehouse.
 This means:
 • Consistent ambience
 • Signature flavours
@@ -223,7 +222,7 @@ Your goal is to create a place people return to for:
 → Customer loyalty plan
 
 🌙 4. Establish a Recognisable, Cinematic Brand
-Fire_Restaurant should be instantly identifiable by its:
+Salt & Smoke should be instantly identifiable by its:
 • Dark‑premium visuals
 • Fire‑kissed identity
 • Bokeh ambience
@@ -247,7 +246,7 @@ Your goals include:
 • Creating a positive, stable work culture
 → Staff training plan
 
-📍 7. Position Fire_Restaurant as a London Destination
+📍 7. Position Salt & Smoke as a Local Destination
 You want the restaurant to become:
 • A go‑to date‑night spot
 • A local favourite
@@ -274,7 +273,7 @@ Behind the scenes, your goals include:
 → Operational plan
 
 🚀 10. Build a Scalable Concept for Future Expansion
-Fire_Restaurant should be designed with growth in mind:
+Salt & Smoke should be designed with growth in mind:
 • Second location potential
 • Franchise or flagship model
 • Expandable brand identity
@@ -284,42 +283,36 @@ Fire_Restaurant should be designed with growth in mind:
 ## User Stories
 ---
 
-🔥 Fire_Restaurant — User Stories
+The stories below describe interactions with the web application. Their coverage
+references point to automated tests in `restaurant/tests.py`.
 
-❤️ 1. Date‑Night Couple
-• As a couple, I want a warm, intimate table, so that we can connect and enjoy a romantic evening together.
-• As a partner, I want the ambience to feel cinematic, so that the night feels special and memorable.
-• As a guest, I want beautifully presented, fire‑kissed dishes, so that the food becomes part of the experience.
-
-🔥 2. Food‑Lover / Young Professional
-• As a food lover, I want bold, smoky flavours, so that I feel I’m eating something crafted and unique.
-• As a young professional, I want a premium but relaxed environment, so that I can unwind after work without feeling rushed.
-• As a diner, I want consistent quality, so that I trust the restaurant every time I visit.
-
-🍷 3. Social Group / Friends
-• As a group of friends, I want a stylish place to meet, so that we can enjoy a night out that feels elevated.
-• As a guest, I want great cocktails and sharable dishes, so that the evening feels social and fun.
-
-🎉 4. Special‑Occasion Guest
-• As someone celebrating, I want the atmosphere to feel premium, so that my occasion feels important.
-• As a host, I want smooth service, so that my guests feel looked after.
-
-📸 5. Aesthetic‑Driven Guest / Content Creator
-• As a content creator, I want visually stunning lighting and plating, so that I can capture beautiful photos and videos.
-• As a guest, I want the environment to feel cinematic, so that the experience feels share‑worthy.
-
-🥃 6. Premium‑Casual Diner
-• As a diner, I want premium food without fine‑dining stiffness, so that I feel comfortable and relaxed.
-• As a regular, I want friendly, warm staff, so that I feel welcomed every time I visit.
-
-🌙 7. Local Resident
-• As a local, I want a unique restaurant in London, so that I don’t have to travel far for a premium experience.
-• As a returning guest, I want consistency, so that Fire_Restaurant becomes my go‑to spot.
+- **Browse the menu:** As a visitor, I want to view menu items and filter them
+  by category, so that I can find dishes of interest before visiting.
+  Coverage: `CustomerApiTests.test_menu_is_public_to_read_and_can_be_filtered`.
+- **Create an account:** As a visitor, I want to register and sign in, so that I
+  can access my reservation dashboard.
+  Coverage: `CustomerApiTests.test_customer_registration_login_and_dashboard`.
+- **Book a table:** As an authenticated customer, I want to check availability
+  and create a reservation, so that I can arrange a visit online.
+  Coverage: `CustomerApiTests.test_availability_displays_all_twenty_tables`
+  and `CustomerApiTests.test_reservation_creation_uses_authenticated_customer_identity`.
+- **Manage my bookings:** As an authenticated customer, I want to edit or cancel
+  my reservations and be prevented from changing another customer's bookings,
+  so that I can manage my plans securely.
+  Coverage: `CustomerApiTests.test_customer_can_edit_and_delete_only_their_own_reservations`
+  and `CustomerApiTests.test_reservation_dashboard_supports_create_edit_and_delete`.
+- **Manage menu content:** As an authorised restaurant administrator, I want
+  to create, edit, and delete menu items, so that the published menu stays
+  current. The Django admin provides these operations; the staff-only menu API
+  also supports create and delete.
+  Coverage: `StaffApiTests.test_django_admin_allows_staff_to_create_and_edit_menu_items`
+  and `StaffApiTests.test_staff_menu_management_requires_staff_authentication`
+  (which verifies staff-only access, creation, and deletion through the API).
 
 ## Core Features (Brand Experience)
 ---
 
-🔥 Fire_Restaurant — Core Features
+🔥 Salt & Smoke — Core Features
 
 🍽️ Fire‑Kissed Signature Menu
 • Smoked, charred, flame‑finished dishes
@@ -396,7 +389,7 @@ Your digital presence matches your physical one.
 ## Future Features
 ---
 
-🔥 Fire_Restaurant — Signature Food Experience
+🔥 Salt & Smoke — Signature Food Experience
 
 🍖 1. Fire‑Kissed Cooking
 The defining technique of the brand.
@@ -433,7 +426,7 @@ The food must look as good as it tastes.
 Every dish is a photo moment.
 
 🌶️ 5. Bold, Confident Flavour Profiles
-Fire_Restaurant is not subtle — it’s intentional.
+Salt & Smoke is not subtle — it’s intentional.
 • Sweet heat
 • Deep umami
 • Charred caramelisation
@@ -459,7 +452,7 @@ Food and drink work together.
 Pairings elevate the entire experience.
 
 ❤️ 8. Emotional Eating Experience
-Fire_Restaurant food is designed to make people feel:
+Salt & Smoke food is designed to make people feel:
 • Warm
 • Indulged
 • Connected
@@ -467,10 +460,50 @@ Fire_Restaurant food is designed to make people feel:
 • Impressed
 It’s comfort food elevated to cinematic dining.
 
-## Wireframe
+## UX Design and Wireframes
 ----
 
-### Wireframe screenshots
+### Design goals and decisions
+
+The original Figma wireframes explored the restaurant's presentation at mobile,
+tablet, and desktop sizes. They provided a visual starting point for a clear
+section-based site, prominent imagery, and navigation suited to both small
+screens and larger displays. The dark navy base (`#0f1728`), warm amber accent
+(`#fea116`), and light text were chosen to support the fire-lit, premium-casual
+brand while keeping important actions and content distinct.
+
+The design prioritises two user needs: quickly understanding the restaurant
+and its menu, and finding the reservation action without having to search.
+This is reflected in the responsive navigation and prominent reservation
+links, followed by the restaurant introduction, searchable/filterable menu,
+booking form, and contact information. Menu search, category filters, and a
+reset state help visitors narrow choices; visible form feedback supports
+reservation, newsletter, and feedback tasks. The palette is a design direction,
+not proof of accessible contrast in every component; see the testing section
+for current accessibility validation status.
+
+### From wireframe to working application
+
+The wireframes and the screenshots below document different stages of the
+design, rather than claiming every final screen was represented by an original
+mock-up. The mobile, tablet, and desktop wireframes show the early home, about,
+services, and gallery concepts. During development, the delivered public
+experience was refined around the implemented restaurant journey: a responsive
+homepage with menu discovery and reservations, rather than separate mock-up
+screens for every interaction.
+
+The final product adds working behaviour that static wireframes could only
+describe: searchable and filterable menu items, validated booking and
+newsletter forms, customer registration and sign-in, an authenticated
+reservation dashboard, and staff menu management. The account and management
+flows are rendered with Django templates and are additional application
+screens; they are not shown in the original wireframe set. These changes turn
+the visual concept into both a customer-facing site and a full-stack
+reservation-management application. The implementation and regression
+coverage are documented under [Features (Application)](#features-application)
+and [Testing](#testing).
+
+### Original wireframe mock-ups
 
 ### Mobile Device
 
@@ -492,6 +525,22 @@ It’s comfort food elevated to cinematic dining.
 ![About desktop](README-img/About-desktop.png)
 ![Services desktop](README-img/Services-desktop.png)
 ![Gallery desktop](README-img/Gallery-desktop.png)
+
+### Implemented application screenshots
+
+The following screenshots show the delivered interface. Compare the
+responsive navigation, homepage, menu, and reservation form with the original
+wireframes above to see how the design direction was carried into the working
+application. Account registration, login, and reservation management are
+implemented as Django-rendered screens; they are not represented in the
+original wireframe images. Some supplied screenshots are earlier captures and
+may retain the previous Fire_Restaurant name; the current code uses Salt &
+Smoke branding.
+
+![Implemented navigation](README-img/Navbar.png)
+![Implemented homepage](README-img/Home-page.png)
+![Implemented menu](README-img/Menu-page.png)
+![Implemented reservation form](README-img/Reservation-Page.png)
 
 
 ## Color Scheme
@@ -528,47 +577,92 @@ It’s comfort food elevated to cinematic dining.
 ## Testing
 ---
 
-### Manual Testing
+Testing is divided between Django backend tests, browser-level Playwright
+tests, and manual quality checks. The Django tests exercise the full-stack
+application and its test database. The Playwright configuration currently
+starts a static `python3 -m http.server` for the legacy `index.html`; it does
+not start Django, so it is not an end-to-end test of the deployed Django
+application.
 
-#### Functionality
+### Run automated tests
 
-| Test                         | Test Action                                                                                           | Expected results                                                       | Test results |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------ |
-| Enquiry form                 | Test navigation to enquiry form                                                                       | Navigation to enquiry form was easily accessible and easy to find      | PASS         |
-| Test the enquiry form        | Does the enquiry form have the right fields for the correct data to be collected for new clients      | The enquiry form has the correct fields such as Name, Email, Phone etc | PASS         |
-| Fill out enquiry form        | Fill out enquiry form, does it display a success message or page                                      | Directed to a success page                                             | PASS         |
-| Return button (success page) | Does the return button work on the success page properly                                              | The return button directs you back to the home page                    | PASS         |
-| Navigation                   | Test the navigation back and forth from page to page. For example - home to gallery, home to projects | Navigation works correctly                                             | PASS         |
+Install Python dependencies and the Node development dependencies, then run:
 
-### W3C HTML Test
+```bash
+python manage.py check
+python manage.py makemigrations --check --dry-run
+python manage.py test restaurant
+npm ci
+npm test
+```
 
-![Manual testing screenshot HTML](README-img/HTML-Test-Validate-by-URI.png)
+The backend suite is in `restaurant/tests.py`. It covers:
 
-### W3C CSS Test
+| Area | Coverage |
+| --- | --- |
+| Authentication | Customer registration, login, dashboard access, and anonymous access restrictions. |
+| Database CRUD | Reservation creation, reading, editing, and deletion; menu creation/editing in Django admin and menu creation/deletion through the staff API; newsletter persistence. |
+| Permissions | Reservation ownership isolation, anonymous booking restrictions, staff-only API access, and Django admin access. |
+| Reservation management | Availability, authenticated ownership, duplicate booking/table conflicts, and create/edit/cancel flows. |
+| Form and API validation | Invalid reservation dates, party sizes, newsletter addresses/duplicates, and malformed JSON. |
 
-![Manual testing screenshot CSS](README-img/CSS-Test-Validate-by-URI.png)
+The Playwright suite is in `tests/site.spec.ts` and is configured for Chromium
+desktop and Pixel 5 mobile projects. Its cases cover client-side reservation,
+newsletter and feedback validation; menu search/category filters; responsive
+layout and mobile navigation; same-origin links; and runtime browser errors.
+The specs also include regression scenarios for restoring an in-progress
+reservation after reload, handling duplicate newsletter subscriptions, and
+showing fallback text when reservation confirmation details are missing.
 
-My project was deployed using GitHub:
+### Latest verification and known gaps
 
-1. My project was pushed to GitHub
+| Check | Latest result |
+| --- | --- |
+| `python3 manage.py check` | PASS — no Django system-check issues. |
+| `python3 manage.py makemigrations --check --dry-run` | PASS — no ungenerated model changes. |
+| `python3 manage.py test restaurant` | PASS — 19 tests. |
+| `npm test` | FAIL — 24 failures (12 scenarios in each browser project). The static-server browser suite does not currently match the Django application UI reliably: tests report missing form selectors, failed interaction expectations, missing resources, and external resource connection resets. Responsive and regression specs exist, but this run does not verify them successfully. |
+| `pycodestyle --statistics --count manage.py salt_smoke restaurant` | FAIL — 117 PEP 8 findings: 115 line-length (`E501`), one `E302`, and one `E305`. The check includes generated migrations; style is not yet enforced in CI. |
+| Current HTML/CSS validation | NOT RUN against the deployed Django application. The repository's W3C screenshots are historical evidence from the earlier static site, not a current validation result. A local HTML Tidy attempt is not authoritative for this HTML5 markup, and no current CSS-validator report is recorded. |
+| Accessibility audit | NOT RUN with an automated WCAG/axe checker. The Playwright specs use accessible labels and roles in places, but this is not a substitute for keyboard, screen-reader, contrast, and zoom testing. |
 
-2. Repository settings was selected
+### Manual test plan
 
-3. Pages section was selected
+For each release, test the live application at desktop and mobile widths:
 
-4. The main branch was chosen as the deployment source
+1. Navigate the site with keyboard only; check visible focus, logical tab order,
+   form labels, error announcements, contrast, and zoom/reflow. Include a
+   screen-reader check and run an automated accessibility audit.
+2. Register a customer, sign in/out, create a booking, edit it, cancel it,
+   and verify another customer cannot view or change that booking.
+3. Sign in as staff; create, edit, and delete a menu item and verify that an
+   unauthorised user cannot perform staff-only actions.
+4. Submit valid and invalid reservation and newsletter forms; verify useful
+   field-level errors and successful confirmation messages.
+5. Check menu search/filter/reset, navigation links, page loading, and browser
+   console/network errors at mobile, tablet, and desktop breakpoints.
+6. Validate the current deployed HTML with the W3C Nu HTML Checker and its
+   CSS with the W3C CSS Validation Service. Record the tested URLs, date,
+   errors, and fixes rather than reusing reports from the older static site.
+7. Re-run Django checks, migration checks, backend tests, Playwright, and a
+   Python PEP 8 linter after fixes; attach current output or a dated test log.
 
-5. GitHub generated the live site URL
+### Bugs, fixes, and unresolved issues
 
-### Lighthouse
+The Playwright regression cases document previously targeted problems: a
+reservation draft disappearing on reload, duplicate newsletter sign-up
+handling, and missing reservation-confirmation fallback text. The Django
+backend tests also guard reservation ownership, preventing anonymous booking,
+and invalid/duplicate submissions. Because the latest Playwright run failed,
+the browser regression cases cannot currently be reported as passing; rework
+the browser test setup/selectors for the current Django experience and rerun
+them before treating those frontend regressions as verified.
 
-#### (index.html) - Desktop
-
-![Lighthouse test index.html](README-img/Lighthouse-test-desktop.jpg)
-
-#### (index.html) - Mobile
-
-![PageSpeed Insights](README-img/Lighthouse-test-Mobile.jpg)
+The outstanding testing work is the failing Playwright suite, the reported
+PEP 8 findings, current W3C HTML/CSS validation, and a formal accessibility
+audit. No separate unresolved-defect register is currently maintained; record
+any further bugs found during release testing here with reproduction steps,
+fix, regression test, and verification result.
 
 ## Screenshots
 ----
@@ -601,30 +695,6 @@ My project was deployed using GitHub:
 ### Contact page
 
 ![Contact page](README-img/Contact-page.png)
-
-## Deployment (Original Process Notes)
----
-
-This project was developed using [VS Code](https://code.visualstudio.com/), committed to git and pushed to GitHub using the built-in function within VS Code.
-
-This site is hosted using GitHub pages, deployed directly from the master branch. The deployed site will update automatically upon new commits to the master branch. In order for the site to deploy correctly on GitHub pages, the landing page must be named index.html.
-
-These are the steps that can be taken to deploy the page on GitHub Pages from its [GitHub repository](https://github.com/Hamid-aa80/Fire-Restaurant):
-
-1. Log into GitHub. 
-2. From the list of repositories on the screen, select [https://github.com/Hamid-aa80/Fire-Restaurant]
-3. From the menu items near the top of the page, select Settings. 
-4. Scroll down to the GitHub Pages section. 
-5. Under Source the drop-down menu should display Deploy from a branch 
-6. On selecting Main Branch the page is automatically refreshed, the website is now deployed. 
-7. Scroll back up to the GitHub Pages section to retrieve the link to the deployed website.
-
-
-The deployed site can also be found on the repository page on the right-hand side under Deployments.
-
-To run locally, you can clone this repository directly into the editor of your choice by pasting `git clone` into your terminal. This can be found on the main repository page by clicking the **Code** button. To disconnect your local copy from this GitHub repository, type `git remote rm origin` in the terminal.
-
-![GitHub clone](README-img/GitHub-clone.png)
 
 ## Credits
 ---
@@ -666,7 +736,7 @@ This application is built to deliver practical value to users:
 - Live availability for twenty four-seat tables, with duplicate and past-slot prevention
 - Newsletter validation and duplicate-subscription handling
 - Feedback form with image constraints and preview
-- Local API with Django + SQLite (`restaurant/`)
+- Django API (`restaurant/`): SQLite locally; persistent PostgreSQL in production
   - `POST /api/reservations`, `GET /api/reservations`, `GET /api/reservations/:id`
   - `POST /api/newsletter/signup`, `GET /api/newsletter/signups`
   - `POST /api/menu`, `GET /api/menu`, `GET /api/menu/:id`, `PUT /api/menu/:id`, `DELETE /api/menu/:id`
@@ -677,14 +747,16 @@ This application is built to deliver practical value to users:
 ---
 
 The Django ORM manages five application entities. Customer login and
-registration use Django's authentication user and a customer profile. Legacy
-customer records are not automatically claimed by matching an email address:
+registration use Django's built-in authentication user and an optional
+one-to-one customer profile (`Customer.user` is nullable for legacy records).
+Legacy customer records are not automatically claimed by matching an email address:
 without verified email ownership, doing so could expose another person's
 booking history. Each restaurant has twenty active tables by default, each
 seating up to four people. A customer can have multiple reservations, but each
 booking belongs to exactly one customer and one table. Reservation name and
 email are also stored as booking-time snapshots. Newsletter subscribers and
-menu items are independent records.
+menu items are independent records. SQLite is the local-development default;
+production uses PostgreSQL configured with `DATABASE_URL`.
 
 ```mermaid
 erDiagram
@@ -735,7 +807,7 @@ erDiagram
         varchar name
         varchar category
         text description
-        decimal price
+        decimal price "nullable, 8 digits, 2 decimal places"
         varchar image
         boolean is_chefs_pick
         datetime created_at
@@ -759,6 +831,8 @@ use `PROTECT` to preserve booking history. Passwords and authentication tokens
 are managed by Django, not stored as plaintext. `MENU_ITEM` and
 `NEWSLETTER_SIGNUP` have no relationship to the other application entities.
 Django's built-in user/group/permission tables support authentication.
+`Customer.user` is nullable and unique, allowing legacy customer records that
+do not have a login. Each reservation must have a customer and a table.
 
 The reservation service seeds tables 1–20 with four seats each on migration.
 Bookings accept 1–4 guests, and validation rejects past dates/times and
@@ -826,7 +900,8 @@ The project uses these external dependencies:
 - Google Fonts (Pacifico)
 - WOW.js
 - Django
-- SQLite
+- SQLite for local development
+- PostgreSQL via `psycopg` for production
 - Playwright
 
 Attribution is applied in two places:
@@ -849,7 +924,8 @@ Attribution is applied in two places:
 
 - Python 3.10+
 - Django 5.2
-- SQLite
+- SQLite for local development
+- PostgreSQL for production (`DATABASE_URL`, `psycopg`)
 
 ### Testing
 
@@ -895,15 +971,6 @@ Health and docs:
 - `http://localhost:5000/api/health`
 - `http://localhost:5000/api/docs`
 
-### Deploy to Heroku
-
-The project includes a Gunicorn `Procfile`, a release-phase database migration,
-PostgreSQL URL configuration, and WhiteNoise static-file serving. Follow
-[DEPLOYMENT.md](DEPLOYMENT.md) to attach Heroku Postgres, configure production
-secrets and hostnames, deploy, and create a new production admin account.
-Heroku's filesystem is temporary, so production must not use the local SQLite
-database.
-
 ### Run tests
 
 ```bash
@@ -914,32 +981,223 @@ python manage.py test restaurant
 ---
 
 ```text
-index.html
-submit.html
-style.css
-manage.py
-salt_smoke/
-restaurant/
-  models.py
-  forms.py
-  views.py
-  urls.py
-  admin.py
-  migrations/
-requirements.txt
-api-client.js
-api-integration-examples.js
-tests/
-assets/
-README-img/
+.
+├── manage.py
+├── requirements.txt
+├── Procfile
+├── .python-version
+├── .gitignore
+├── .slugignore
+├── package.json
+├── package-lock.json
+├── playwright.config.ts
+├── index.html
+├── submit.html
+├── style.css
+├── api-client.js
+├── api-integration-examples.js
+├── assets/
+│   └── img/
+├── salt_smoke/                 # Django project configuration
+│   ├── __init__.py
+│   ├── settings.py             # database, security, static files, installed apps
+│   ├── urls.py                 # project routes and frontend asset serving
+│   ├── asgi.py
+│   └── wsgi.py
+├── restaurant/                 # Django application
+│   ├── __init__.py
+│   ├── apps.py
+│   ├── models.py                # customers, reservations, tables, menu, signups
+│   ├── forms.py
+│   ├── views.py
+│   ├── urls.py                  # app/API routes
+│   ├── admin.py
+│   ├── tests.py
+│   ├── migrations/
+│   │   ├── __init__.py
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_customer_reservation_customer.py
+│   │   ├── 0003_restauranttable_customer_user_reservation_table_and_more.py
+│   │   └── 0004_alter_customer_email.py
+│   └── templates/
+│       └── restaurant/
+│           ├── base.html
+│           ├── register.html    # customer account registration
+│           ├── login.html       # customer sign-in
+│           └── reservations.html # account dashboard and booking management
+├── tests/
+│   └── site.spec.ts             # Playwright browser tests
+├── .github/
+│   └── workflows/
+│       ├── static.yml
+│       └── jekyll-gh-pages.yml
+├── README-img/                  # documentation screenshots
+├── README.md
+├── API-DOCUMENTATION.md
+├── API-QUICKSTART.md
+├── API-SETUP-COMPLETE.md
+└── DEPLOYMENT.md
 ```
 
-## Deployment (Current)
+Customer registration, login, and reservation management are rendered from
+Django templates and handled by `restaurant/views.py`; they do not have
+separate account or management JavaScript files. `index.html`, `submit.html`,
+`style.css`, and the shared JavaScript files at the repository root are the
+existing frontend assets served by the Django project.
+
+## Heroku Deployment
 ---
 
-Frontend deployment is on GitHub Pages:
+The full-stack Django application is deployed to Heroku and uses Heroku
+Postgres for persistent production data. Heroku dyno filesystems are
+ephemeral, so SQLite is for local development only. The `Procfile` runs
+Gunicorn and applies database migrations during the release phase; WhiteNoise
+serves collected static files. The production site is
+https://fire-restaurant-583481b558bc.herokuapp.com/.
 
-- https://hamid-aa80.github.io/Fire-Restaurant/
+### 1. Prepare the repository
+
+Clone the repository and install the pinned Python dependencies from
+`requirements.txt`:
+
+```bash
+git clone https://github.com/Hamid-aa80/Fire-Restaurant.git
+cd Fire-Restaurant
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+Before deploying, check the Django configuration, pending migration files, and
+automated tests:
+
+```bash
+python manage.py check
+python manage.py makemigrations --check --dry-run
+python manage.py test restaurant
+```
+
+Ensure the commit includes `Procfile`, `requirements.txt`, the Django project
+and app, and all migration files. Do not commit secrets or the local SQLite
+database (`.gitignore` excludes SQLite files). Commit and push the reviewed
+changes to the branch intended for deployment.
+
+### 2. Prepare the Heroku app and database
+
+Install the Heroku CLI and authenticate:
+
+```bash
+heroku login
+```
+
+The live app's Heroku name is `fire-restaurant-583481b558bc`. For this
+existing app, connect its Git remote:
+
+```bash
+heroku git:remote --app fire-restaurant-583481b558bc
+```
+
+For a new deployment instead, create an app with an available unique name
+using `heroku create <app-name>`, then use that same app name and its generated
+`<app-name>.herokuapp.com` host in the commands and config below.
+
+Attach an available Heroku Postgres plan to the app in the Heroku Dashboard.
+Heroku sets `DATABASE_URL` when the database is attached; do not put the
+database URL in source control or replace it with a local SQLite path. Confirm
+in the Dashboard that `DATABASE_URL` is set, but do not copy or share its
+secret value.
+
+Set the Python buildpack so Heroku installs the dependencies in
+`requirements.txt`:
+
+```bash
+heroku buildpacks:set heroku/python --app fire-restaurant-583481b558bc
+```
+
+### 3. Configure production environment
+
+Generate a unique Django secret key locally:
+
+```bash
+python3 -c "import secrets; print(secrets.token_urlsafe(50))"
+```
+
+Configure Django with a secret key, production mode, the deployed hostname,
+and its HTTPS CSRF origin. `DATABASE_URL` is provided by Heroku Postgres and
+does not need to be set in this command. Replace the placeholder key with the
+generated value before running:
+
+```bash
+heroku config:set \
+  DJANGO_SECRET_KEY='paste-the-generated-secret-here' \
+  DJANGO_DEBUG=false \
+  DJANGO_ALLOWED_HOSTS='fire-restaurant-583481b558bc.herokuapp.com' \
+  DJANGO_CSRF_TRUSTED_ORIGINS='https://fire-restaurant-583481b558bc.herokuapp.com' \
+  --app fire-restaurant-583481b558bc
+```
+
+Do not commit the generated secret. With `DJANGO_DEBUG=false`, production
+settings enable HTTPS redirects and secure cookies and trust Heroku's TLS
+proxy. The buildpack installs the pinned requirements and collects static
+files for WhiteNoise.
+
+### 4. Deploy and apply database migrations
+
+For a Heroku Git deployment, push the reviewed commit to Heroku's `main`
+branch (this works even when your local branch has a different name):
+
+```bash
+git push heroku HEAD:main
+```
+
+The `web` process in `Procfile` runs Gunicorn. Its `release` process runs
+`python manage.py migrate` against the Postgres database before the new
+release serves traffic. A failed migration prevents the release from being
+promoted; inspect the build and release logs if deployment fails. If using
+Heroku's GitHub integration, push the reviewed commit to the branch connected
+to the app instead. Check deployment status and recent release history with:
+
+```bash
+heroku releases --app fire-restaurant-583481b558bc
+heroku logs --tail --app fire-restaurant-583481b558bc
+```
+
+After deployment, confirm migrations are applied and run Django's system
+check against the production configuration:
+
+```bash
+heroku run --app fire-restaurant-583481b558bc python manage.py showmigrations --plan
+heroku run --app fire-restaurant-583481b558bc python manage.py check
+```
+
+### 5. Create an administrator and test the deployed app
+
+Production starts with an empty Postgres database; local database records and
+the local admin account are not transferred. Create a new superuser with a
+unique, strong password:
+
+```bash
+heroku run --app fire-restaurant-583481b558bc python manage.py createsuperuser
+```
+
+Verify these production URLs:
+
+- Homepage: https://fire-restaurant-583481b558bc.herokuapp.com/
+- Health check: https://fire-restaurant-583481b558bc.herokuapp.com/api/health
+- Admin: https://fire-restaurant-583481b558bc.herokuapp.com/admin/
+- Customer registration: https://fire-restaurant-583481b558bc.herokuapp.com/accounts/register/
+
+The health endpoint should return `{"status": "API is running"}`. Also check
+that the admin login page loads and that a customer can register, sign in,
+create a reservation, and view it in their dashboard. Sign in to the admin
+site and verify staff can create, edit, and delete a menu item. Review Heroku
+logs for request or database errors. Existing local SQLite customers,
+reservations, and menu records are not copied to Postgres; transfer any data
+to retain through a separate, reviewed procedure.
+
+For a compact copy of the Heroku-specific configuration and commands, see
+[DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Disclaimer
 ---

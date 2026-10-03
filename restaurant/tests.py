@@ -52,7 +52,12 @@ class CustomerApiTests(TestCase):
             self.client.get(reverse("api-health")).json(),
             {"status": "API is running"},
         )
-        self.assertContains(self.client.get(reverse("home")), "<title>Fire_Restaurant</title>")
+        homepage = self.client.get(reverse("home"))
+        self.assertContains(homepage, "<title>Salt &amp; Smoke</title>")
+        self.assertContains(homepage, "Table Reservations")
+        self.assertContains(homepage, "Customer Accounts")
+        self.assertNotContains(homepage, "Online Ordering")
+        self.assertNotContains(homepage, "24/7 Customer Support")
 
     @override_settings(DEBUG=False, SECURE_SSL_REDIRECT=False)
     def test_frontend_assets_are_served_in_production_mode(self):
