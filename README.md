@@ -1,3 +1,8 @@
+# Fire Restaurant
+
+![Fire Restaurant Implemented - Screenshot](README-img/Screenshot.png)
+
+
 # Salt & Smoke — Fire_Restaurant Project
 ---
 
@@ -86,7 +91,6 @@ routine restaurant interactions in one place.
 
 Salt & Smoke — Target Audience Overview
 
-
 1. Couples Seeking Premium Date‑Night Experiences
 Your strongest, most natural audience segment.
 • Ages 24–45
@@ -138,7 +142,6 @@ People who want quality without the stiffness of fine dining.
 • Prefer premium but approachable
 • Value comfort, warmth, and great service
 • Enjoy bold flavours and curated drinks
-
 
 ## User Goals
 ---
@@ -285,7 +288,6 @@ Salt & Smoke should be designed with growth in mind:
 
 The stories below describe interactions with the web application. Their coverage
 references point to automated tests in `restaurant/tests.py`.
-
 - **Browse the menu:** As a visitor, I want to view menu items and filter them
   by category, so that I can find dishes of interest before visiting.
   Coverage: `CustomerApiTests.test_menu_is_public_to_read_and_can_be_filtered`.
@@ -303,7 +305,8 @@ references point to automated tests in `restaurant/tests.py`.
   Coverage: `CustomerApiTests.test_past_date_time_and_parties_over_four_are_rejected`,
   `CustomerApiTests.test_table_slot_and_customer_duplicate_slots_are_rejected`,
   and `CustomerApiTests.test_database_constraint_prevents_concurrent_table_slot_duplicates`.
-- **Manage my bookings:** As an authenticated customer, I want to edit or cancel
+- **Manage my bookings:** As an authenticated customer, I want to edit or 
+cancel
   my reservations and be prevented from changing another customer's bookings,
   so that I can manage my plans securely.
   Coverage: `CustomerApiTests.test_customer_can_edit_and_delete_only_their_own_reservations`
@@ -499,6 +502,7 @@ experience was refined around the implemented restaurant journey: a responsive
 homepage with menu discovery and reservations, rather than separate mock-up
 screens for every interaction.
 
+
 The final product adds working behaviour that static wireframes could only
 describe: searchable and filterable menu items, validated booking and
 newsletter forms, customer registration and sign-in, an authenticated
@@ -552,7 +556,6 @@ Smoke branding.
 ![Implemented Desktop full-screen version](README-img/Studio.png)
 
 
-
 ## Color Scheme
 ---
 
@@ -565,7 +568,6 @@ Smoke branding.
 ## Contrast Checker
 
 ![primary](README-img/Contrast-primary.png)
-
 
 ## Technologies Used
 ---
@@ -733,8 +735,6 @@ This application is built to deliver practical value to users:
 - **Simple communication:** newsletter sign-up with immediate feedback.
 - **Ongoing engagement:** feedback submission with optional image upload.
 
-
-
 ## Features (Application)
 ---
 
@@ -746,7 +746,9 @@ This application is built to deliver practical value to users:
 - Live availability inventory for twenty four-seat tables, with past-date/time validation and database-enforced duplicate-slot prevention
 - Newsletter validation and duplicate-subscription handling
 - Feedback form with image constraints and preview
-- Django API (`restaurant/`): SQLite locally; persistent PostgreSQL in production
+- Django API (`restaurant/`): SQLite locally; persistent PostgreSQL in 
+
+production
   - `POST /api/reservations`, `GET /api/reservations`, `GET /api/reservations/:id`
   - `POST /api/newsletter/signup`, `GET /api/newsletter/signups`
   - `POST /api/menu`, `GET /api/menu`, `GET /api/menu/:id`, `PUT /api/menu/:id`, `DELETE /api/menu/:id`
@@ -838,6 +840,7 @@ date/time slots but have a database constraint preventing two bookings for the
 same slot. A second database constraint prevents one customer from making
 duplicate bookings at the same date and time. Customer and table references
 use `PROTECT` to preserve booking history. Passwords and authentication tokens
+
 are managed by Django, not stored as plaintext. `MENU_ITEM` and
 `NEWSLETTER_SIGNUP` have no relationship to the other application entities.
 Django's built-in user/group/permission tables support authentication.
@@ -861,7 +864,6 @@ logs.
 
 ## Development Cycle (Documented with Commit Evidence)
 ---
-
 The project was developed iteratively:
 
 1. **Foundation and UI structure**  
@@ -1184,7 +1186,6 @@ heroku run --app fire-restaurant-583481b558bc python manage.py check
 ```
 
 ### 5. Create an administrator and test the deployed app
-
 Production starts with an empty Postgres database; local database records and
 the local admin account are not transferred. Create a new superuser with a
 unique, strong password:
