@@ -548,8 +548,8 @@ may retain the previous Fire_Restaurant name; the current code uses Salt &
 Smoke branding.
 
 ![Implemented Mobile full-screen version](README-img/Mobile.png)
-![Desktop full-screen version](README-img/Studio.png)
-![Tablet full-screen version](README-img/Tablet.png)
+
+![Implemented Desktop full-screen version](README-img/Studio.png)
 
 
 
