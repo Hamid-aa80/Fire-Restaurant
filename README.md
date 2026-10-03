@@ -852,7 +852,9 @@ Staff can sign in at `/admin/` to add, edit, and delete menu items, including
 their category, description, price, image, and chef's-pick status. The admin
 site also provides reservation, customer, table, and newsletter management.
 The local development database has a superuser named `Admin`; change its
-provided temporary password before deploying or sharing this database.
+provided temporary password before deploying or sharing this database. Do not
+store administrator passwords in this README, source control, or deployment
+logs.
 
 ## Development Cycle (Documented with Commit Evidence)
 ---
@@ -1187,6 +1189,12 @@ unique, strong password:
 ```bash
 heroku run --app fire-restaurant-583481b558bc python manage.py createsuperuser
 ```
+
+The current production management login is
+[https://fire-restaurant-583481b558bc.herokuapp.com/admin/login/](https://fire-restaurant-583481b558bc.herokuapp.com/admin/login/)
+with username `manager`. The password is intentionally not documented here;
+store and share it only through a secure password manager or other approved
+secret-sharing channel, and rotate it if it has been exposed.
 
 Verify these production URLs:
 
