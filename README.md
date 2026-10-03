@@ -84,10 +84,10 @@ routine restaurant interactions in one place.
 ## Target Audience
 ---
 
-🎯 Salt & Smoke — Target Audience Overview
+Salt & Smoke — Target Audience Overview
 
 
-❤️ 1. Couples Seeking Premium Date‑Night Experiences
+1. Couples Seeking Premium Date‑Night Experiences
 Your strongest, most natural audience segment.
 • Ages 24–45
 • Looking for intimate, warm, cinematic dining
@@ -95,7 +95,7 @@ Your strongest, most natural audience segment.
 • Celebrate anniversaries, first dates, “just because” nights
 • Love curated cocktails, wine, and fire‑kissed dishes
 
-🔥 2. Young Professionals & Food‑Lovers
+2. Young Professionals & Food‑Lovers
 People who appreciate craft cooking and premium visuals.
 • Ages 22–40
 • Follow food trends, smokehouse culture, and premium dining
@@ -103,28 +103,28 @@ People who appreciate craft cooking and premium visuals.
 • Value quality ingredients and bold flavours
 • Seek restaurants with a strong brand identity
 
-🍻 3. Social Groups & Small Gatherings
+3. Social Groups & Small Gatherings
 Friends who want a stylish, warm place to meet.
 • Ages 25–45
 • After‑work dinners, weekend meetups, small celebrations
 • Enjoy craft beer, cocktails, shared plates
 • Prefer venues with atmosphere over loud bars
 
-🌙 4. Local London Residents Seeking Something “Different”
+4. Local London Residents Seeking Something “Different”
 People tired of the same chain restaurants.
 • Ages 28–55
 • Want a distinctive, premium-casual dining experience
 • Appreciate independent brands with personality
 • Seek quality, consistency, and a memorable environment
 
-📸 5. Aesthetic‑Driven Diners & Content Creators
+5. Aesthetic‑Driven Diners & Content Creators
 Your cinematic visuals attract this group naturally.
 • Ages 18–35
 • Love dark‑premium, moody, fire‑kissed visuals
 • Post food, ambience, and date‑night content
 • Value design, lighting, and brand storytelling
 
-🧩 6. Special‑Occasion Diners
+6. Special‑Occasion Diners
 People celebrating life moments.
 • Birthdays
 • Anniversaries
@@ -132,7 +132,7 @@ People celebrating life moments.
 • Engagements
 • Family milestones
 
-🥃 7. Premium Casual Diners
+7. Premium Casual Diners
 People who want quality without the stiffness of fine dining.
 • Ages 30–55
 • Prefer premium but approachable
@@ -143,46 +143,46 @@ People who want quality without the stiffness of fine dining.
 ## User Goals
 ---
 
-🎯 Salt & Smoke — User Goals
+Salt & Smoke — User Goals
 
-❤️ 1. To Have a Memorable Date Night
+1. To Have a Memorable Date Night
 Your guests want a place that feels intimate, cinematic, and special.
 They want to connect, talk, lean in, and feel the moment.
 → Date‑night experience
 
-🔥 2. To Enjoy Fire‑Kissed, High‑Quality Food
+2. To Enjoy Fire‑Kissed, High‑Quality Food
 They want bold flavours, premium ingredients, and dishes that feel crafted, not generic.
 They want to taste the smoke, the char, the heat.
 → Signature food experience
 
-🌙 3. To Escape Into a Cinematic Atmosphere
+3. To Escape Into a Cinematic Atmosphere
 Your dark‑premium ambience is a mood.
 Guests want to feel transported — warm lighting, bokeh, shadows, fire.
 → Cinematic ambience
 
-🍷 4. To Celebrate Something Special
+4. To Celebrate Something Special
 Birthdays, anniversaries, promotions, first dates, reunions.
 They want a place that feels worthy of the moment.
 → Special‑occasion experience
 
-📸 5. To Experience a Visually Stunning Environment
+5. To Experience a Visually Stunning Environment
 Your guests love the aesthetic — the visuals matter.
 They want a place that looks like a film scene and photographs beautifully.
 → Aesthetic‑driven dining
 
-🥃 6. To Relax in a Premium but Comfortable Space
+6. To Relax in a Premium but Comfortable Space
 Not stiff fine dining.
 Not loud casual dining.
 A warm, elegant middle ground.
 → Premium‑casual comfort
 
-🧑‍🤝‍🧑 7. To Feel Looked After
+7. To Feel Looked After
 Guests want attentive, warm, human service.
 Not rushed. Not robotic.
 They want to feel seen.
 → Hospitality experience
 
-🎬 8. To Leave With a Lasting Impression
+8. To Leave With a Lasting Impression
 They want the night to feel like a memory — something they’ll talk about.
 Your brand is built for that.
 → Brand emotional impact
@@ -191,9 +191,9 @@ Your brand is built for that.
 ## Business and Site Owner Goals
 ---
 
-🎯 Salt & Smoke — Business & Site Owner Goals
+Salt & Smoke — Business & Site Owner Goals
 
-🔥 1. Deliver a Distinctive, Premium Dining Experience
+ 1. Deliver a Distinctive, Premium Dining Experience
 You want Salt & Smoke to stand out as a unique, cinematic, fire‑kissed smokehouse.
 This means:
 • Consistent ambience
@@ -202,7 +202,7 @@ This means:
 • A recognisable brand identity
 → Premium dining experience
 
-💷 2. Achieve Strong, Predictable Revenue
+ 2. Achieve Strong, Predictable Revenue
 The business must generate stable income through:
 • High‑value date‑night bookings
 • Weekend peak performance
@@ -211,7 +211,7 @@ The business must generate stable income through:
 • Special events
 → Revenue strategy
 
-🍽️ 3. Build a Loyal, Returning Customer Base
+3. Build a Loyal, Returning Customer Base
 Repeat customers are the backbone of a successful restaurant.
 Your goal is to create a place people return to for:
 • Date nights
@@ -221,7 +221,7 @@ Your goal is to create a place people return to for:
 • “Just because” evenings
 → Customer loyalty plan
 
-🌙 4. Establish a Recognisable, Cinematic Brand
+ 4. Establish a Recognisable, Cinematic Brand
 Salt & Smoke should be instantly identifiable by its:
 • Dark‑premium visuals
 • Fire‑kissed identity
@@ -230,7 +230,7 @@ Salt & Smoke should be instantly identifiable by its:
 • Emotional storytelling
 → Brand identity
 
-👨‍🍳 5. Maintain High Food Quality & Consistency
+5. Maintain High Food Quality & Consistency
 Your goal is to ensure every dish is:
 • Fire‑kissed
 • Bold in flavour
@@ -238,7 +238,7 @@ Your goal is to ensure every dish is:
 • Consistent every time
 → Food quality standards
 
-🧑‍🤝‍🧑 6. Build a Strong, Motivated Team
+6. Build a Strong, Motivated Team
 A great restaurant is built on great people.
 Your goals include:
 • Hiring skilled, warm staff
@@ -246,7 +246,7 @@ Your goals include:
 • Creating a positive, stable work culture
 → Staff training plan
 
-📍 7. Position Salt & Smoke as a Local Destination
+7. Position Salt & Smoke as a Local Destination
 You want the restaurant to become:
 • A go‑to date‑night spot
 • A local favourite
@@ -254,7 +254,7 @@ You want the restaurant to become:
 • A destination worth travelling for
 → Local positioning
 
-📸 8. Leverage Visual Content to Drive Bookings
+ 8. Leverage Visual Content to Drive Bookings
 Your cinematic style is a business asset.
 Your goals include:
 • High‑quality video content
@@ -263,7 +263,7 @@ Your goals include:
 • Visual storytelling that converts viewers into diners
 → Content strategy
 
-🧩 9. Ensure Operational Efficiency & Smooth Service
+ 9. Ensure Operational Efficiency & Smooth Service
 Behind the scenes, your goals include:
 • Fast table turnover (without rushing guests)
 • Smooth kitchen workflow
@@ -272,7 +272,7 @@ Behind the scenes, your goals include:
 • Minimal waste
 → Operational plan
 
-🚀 10. Build a Scalable Concept for Future Expansion
+10. Build a Scalable Concept for Future Expansion
 Salt & Smoke should be designed with growth in mind:
 • Second location potential
 • Franchise or flagship model
@@ -319,16 +319,16 @@ references point to automated tests in `restaurant/tests.py`.
 ## Core Features (Brand Experience)
 ---
 
-🔥 Salt & Smoke — Core Features
+ Salt & Smoke — Core Features
 
-🍽️ Fire‑Kissed Signature Menu
+Fire‑Kissed Signature Menu
 • Smoked, charred, flame‑finished dishes
 • Premium ingredients
 • Bold, layered flavours
 • Consistent plating and presentation
 This is the heart of the brand.
 
-🌙 Dark‑Premium Cinematic Ambience
+Dark‑Premium Cinematic Ambience
 • Low, warm lighting
 • Candle bokeh
 • Soft smoke drift
@@ -336,14 +336,14 @@ This is the heart of the brand.
 • Matte‑black textures
 The restaurant feels like a film scene.
 
-❤️ Date‑Night Focused Seating
+Date‑Night Focused Seating
 • Intimate table spacing
 • Romantic lighting
 • Quiet, warm atmosphere
 • Designed for connection
 Your strongest audience segment.
 
-🥃 Premium Drinks Experience
+Premium Drinks Experience
 • Curated cocktails
 • Quality wines
 • Craft beers
@@ -351,42 +351,42 @@ Your strongest audience segment.
 • Fire‑kissed garnishes
 Premium taste, casual attitude.
 
-🎧 Cinematic Soundscape
+Cinematic Soundscape
 • Warm ambient hum
 • Subtle fire crackle
 • Low‑tempo background music
 • No harsh highs or loudness
 Sound completes the mood.
 
-📸 Visually Stunning Environment
+Visually Stunning Environment
 • Photogenic plating
 • Cinematic lighting
 • Bokeh‑rich backgrounds
 • Shadow‑driven compositions
 Perfect for organic social sharing.
 
-🧑‍🤝‍🧑 Warm, Human Hospitality
+ Warm, Human Hospitality
 • Friendly, attentive staff
 • Knowledgeable but not pushy
 • Relaxed tone
 • Consistent service rituals
 Premium without pretension.
 
-🪑 Premium‑Casual Comfort
+Premium‑Casual Comfort
 • Comfortable seating
 • Relaxed pacing
 • No fine‑dining stiffness
 • No casual‑dining chaos
 The perfect middle ground.
 
-🎉 Special‑Occasion Ready
+Special‑Occasion Ready
 • Birthday and anniversary‑friendly
 • Celebration‑ready ambience
 • Optional dessert messages
 • Staff trained for special moments
 A place worth dressing up for.
 
-📱 Modern Digital Experience
+Modern Digital Experience
 • Online booking
 • Social‑first content
 • Cinematic video marketing
@@ -396,9 +396,9 @@ Your digital presence matches your physical one.
 ## Future Features
 ---
 
-🔥 Salt & Smoke — Signature Food Experience
+Salt & Smoke — Signature Food Experience
 
-🍖 1. Fire‑Kissed Cooking
+1. Fire‑Kissed Cooking
 The defining technique of the brand.
 • Open‑flame finishing
 • Charred edges
@@ -407,7 +407,7 @@ The defining technique of the brand.
 • Ember‑kissed aromatics
 Every dish carries the unmistakable signature of flame.
 
-🌫️ 2. Smokehouse Depth
+2. Smokehouse Depth
 Not overpowering — refined.
 • Subtle wood‑smoke layers
 • Balanced seasoning
@@ -415,7 +415,7 @@ Not overpowering — refined.
 • Distinct but elegant aroma
 Smoke is treated like a seasoning, not a gimmick.
 
-🍽️ 3. Premium Ingredients
+3. Premium Ingredients
 Quality is non‑negotiable.
 • High‑grade meats
 • Fresh, local produce
@@ -423,7 +423,7 @@ Quality is non‑negotiable.
 • Carefully sourced spices
 Premium casual means premium ingredients, always.
 
-🎨 4. Cinematic Plating
+4. Cinematic Plating
 The food must look as good as it tastes.
 • Dark plates for contrast
 • Gold highlights
@@ -432,7 +432,7 @@ The food must look as good as it tastes.
 • Bokeh‑friendly compositions
 Every dish is a photo moment.
 
-🌶️ 5. Bold, Confident Flavour Profiles
+5. Bold, Confident Flavour Profiles
 Salt & Smoke is not subtle — it’s intentional.
 • Sweet heat
 • Deep umami
@@ -441,7 +441,7 @@ Salt & Smoke is not subtle — it’s intentional.
 • Rich, smoky undertones
 Flavour that feels crafted, layered, and memorable.
 
-🥩 6. Hero Dishes With Identity
+6. Hero Dishes With Identity
 Your menu has signature stars.
 • Brisket
 • Flame‑finished chicken
@@ -450,7 +450,7 @@ Your menu has signature stars.
 • Fire‑kissed seafood
 These become the dishes people talk about.
 
-🍷 7. Perfect Pairings
+7. Perfect Pairings
 Food and drink work together.
 • Smoke‑friendly wines
 • Char‑enhancing cocktails
@@ -458,7 +458,7 @@ Food and drink work together.
 • House‑infused spirits
 Pairings elevate the entire experience.
 
-❤️ 8. Emotional Eating Experience
+8. Emotional Eating Experience
 Salt & Smoke food is designed to make people feel:
 • Warm
 • Indulged
