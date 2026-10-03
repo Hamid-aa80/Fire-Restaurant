@@ -547,10 +547,10 @@ original wireframe images. Some supplied screenshots are earlier captures and
 may retain the previous Fire_Restaurant name; the current code uses Salt &
 Smoke branding.
 
-![Implemented navigation](README-img/Navbar.png)
-![Implemented homepage](README-img/Home-page.png)
-![Implemented menu](README-img/Menu-page.png)
-![Implemented reservation form](README-img/Reservation-Page.png)
+![Implemented Mobile full-screen version](README-img/Mobile.png)
+![Desktop full-screen version](README-img/Studio.png)
+![Tablet full-screen version](README-img/Tablet.png)
+
 
 
 ## Color Scheme
